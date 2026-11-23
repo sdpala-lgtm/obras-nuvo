@@ -36,7 +36,7 @@ aside{width:232px;background:var(--side);color:#d6dde5;display:flex;flex-directi
 .sres div{padding:9px 14px;cursor:pointer;border-bottom:1px solid var(--line)}.sres div:hover{background:var(--soft)}.sres small{color:var(--mut)}
 .tb{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:8px 12px;position:relative}
 .tb.on{background:#e8a21c26;border-color:var(--ac)}
-.badge{position:absolute;top:-6px;right:-6px;background:var(--ac);color:#14202b;border-radius:10px;font-size:11px;font-weight:700;padding:0 6px}
+.pres{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:6px 10px;border-radius:10px;border:1px solid var(--line);background:var(--soft)}.pres i{width:9px;height:9px;border-radius:50%;background:#9aa5b1;display:inline-block}.pres.on i{background:#2e9e5b;box-shadow:0 0 0 3px rgba(46,158,91,.25)}.pres.warn{border-color:#a23c00}.pres.warn i{background:#e07a1f;box-shadow:0 0 0 3px rgba(224,122,31,.3)}.badge{position:absolute;top:-6px;right:-6px;background:var(--ac);color:#14202b;border-radius:10px;font-size:11px;font-weight:700;padding:0 6px}
 .content{flex:1;overflow:auto;padding:22px 24px 60px}
 h1{font-size:28px;margin:0 0 2px}h2{font-size:15px;margin:0}h3{font-size:13px;margin:0;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
 .sub{color:var(--mut);margin:0 0 16px}
@@ -234,7 +234,7 @@ DEF.proyectos=()=>({codigo:pcode(),estado:'En Diseño',etapa:0,moneda:S().princi
 
 /* ============ Render base ============ */
 const NAV=[['dashboard','Dashboard','▦'],['clientes','Clientes','☺'],['proyectos','Proyectos','◎'],['tareas','Tareas','☑'],['agenda','Visitas y Agenda','▤'],['proveedores','Proveedores','⛟'],['compras','Compras y Pedidos','⛁'],['documentos','Documentos','▭'],['finanzas','Finanzas','$'],['reporte','Reporte de obras','≡'],['equipo','Equipo','☻']];
-function go(v,sub){U.view=v;U.sub=sub||{};U.sel=null;try{history.replaceState(null,'','#'+v)}catch(e){}render();const c=$('.content');if(c)c.scrollTop=0}
+function go(v,sub){U.view=v;U.sub=sub||{};U.sel=null;try{history.replaceState(null,'','#'+v)}catch(e){}render();try{presPing()}catch(e){}const c=$('.content');if(c)c.scrollTop=0}
 function applyTheme(){document.body.classList.toggle('dark',S().tema==='oscuro');document.documentElement.style.setProperty('--ac',S().acento);document.title=S().estudio+' — Workspace'}
 function notifs(){
   const t=today(),out=[];
@@ -254,7 +254,7 @@ function render(){
   <div class="foot"><button data-a="go" data-v="papelera" class="${U.view==='papelera'?'on':''}">🗑 <span class="t">Papelera</span></button><button data-a="settings">⚙ <span class="t">Configuración</span></button>
   <div class="me"><div class="av">${esc(initials(s.titular))}</div><div><b style="color:#fff">${esc(s.titular)}</b><br><span style="color:#8fa0b2">${esc(s.estudio)}</span></div></div></div></aside>
   <div class="main"><div class="top"><div class="sbox"><input id="gs" placeholder="Buscar clientes, proyectos, tareas…" autocomplete="off"><div id="sr"></div></div>
-   ${AW!=='nuvo'?'<button class="tb" data-a="lock">🔒 Bloquear</button><button class="tb" data-a="chpw">🔑 Contraseña</button>':''}${STANDALONE&&SYN.cfg.url?`<button class="tb" data-a="syncnow">☁ ${esc(SYN.msg||'Sincronizar')}</button>`:''}<button class="tb" data-a="theme">${s.tema==='oscuro'?'☀ Claro':'☾ Oscuro'}</button>
+   ${AW!=='nuvo'?'<button class="tb" data-a="lock">🔒 Bloquear</button><button class="tb" data-a="chpw">🔑 Contraseña</button>':''}${presHTML()}${STANDALONE&&SYN.cfg.url?`<button class="tb" data-a="syncnow">☁ ${esc(SYN.msg||'Sincronizar')}</button>`:''}<button class="tb" data-a="theme">${s.tema==='oscuro'?'☀ Claro':'☾ Oscuro'}</button>
    <button class="tb ${D.reminders?'on':''}" data-a="rem">⏰ Recordatorios: ${D.reminders?'Sí':'No'}</button>
    <button class="tb" data-a="notif">🔔 Notificaciones${n?`<span class="badge">${n}</span>`:''}</button>
    <button class="tb" data-a="help">? Instructivo</button></div>
@@ -720,6 +720,39 @@ if(STANDALONE){
   setInterval(()=>syncNow(false),180000);setTimeout(()=>syncNow(false),1500);
 }
 
+/* ============ Presencia (quién está conectado) ============ */
+const PR={id:'',name:'',others:[],ok:true,t:null};
+try{PR.id=localStorage.getItem('pres_id')||'';if(!PR.id){PR.id=Math.random().toString(36).slice(2,10);localStorage.setItem('pres_id',PR.id)}PR.name=localStorage.getItem('pres_name')||''}catch(e){PR.id=PR.id||'x'+Date.now()}
+const presOn=()=>STANDALONE&&SYN.cfg.url&&SYN.cfg.token&&AW==='nuvo';
+const viewLabel=v=>{const n=NAV.find(x=>x[0]===v);return n?n[1]:v};
+function presHTML(){
+  if(!presOn())return '';
+  if(!PR.name)return '<button class="tb" data-a="prask" title="Indicá tu nombre para ver quién está conectado">⚪ ¿Quién sos?</button>';
+  if(!PR.ok)return '<span class="pres" title="Sin conexión: no se puede ver quién está"><i></i>Sin conexión</span>';
+  const o=PR.others;
+  if(!o.length)return '<span class="pres" title="Nadie más está conectado ahora"><i></i>Solo vos</span>';
+  const same=o.filter(x=>x.v===U.view);
+  if(same.length)return `<span class="pres warn on" title="Están en la misma sección: cuidado de no cargar lo mismo"><i></i>${esc(same.map(x=>x.n).join(', '))} también está en ${esc(viewLabel(U.view))}</span>`;
+  return `<span class="pres on" title="Conectado ahora"><i></i>${o.map(x=>esc(x.n)+' · '+esc(viewLabel(x.v))).join(' | ')}</span>`;
+}
+function paintPres(){const el=document.querySelector('.top .pres,.top [data-a=prask]');const h=presHTML();if(!el){if(h)render();return}if(!h){el.remove();return}const t=document.createElement('div');t.innerHTML=h;el.replaceWith(t.firstChild)}
+async function presPing(){
+  if(!presOn()||!PR.name||document.visibilityState!=='visible'){if(!presOn()&&PR.others.length){PR.others=[];}return}
+  try{
+    const r=await fetch(SYN.cfg.url,{method:'POST',body:JSON.stringify({token:SYN.cfg.token,ping:{id:PR.id,n:PR.name,v:U.view}}),redirect:'follow'});
+    const res=await r.json();
+    if(res&&!res.error&&Array.isArray(res.pres)){PR.others=res.pres;PR.ok=true}else PR.ok=res&&res.error?PR.ok:false
+  }catch(e){PR.ok=false;PR.others=[]}
+  paintPres();
+}
+function presAsk(){modal(`<h2>¿Quién sos?</h2><p class="sm mut">Se usa para mostrar a los demás que estás conectado y en qué sección. Se guarda solo en este dispositivo.</p><div class="acts" style="justify-content:flex-start"><button class="btn p" data-a="prset" data-v="Diego">Diego</button><button class="btn p" data-a="prset" data-v="Tomás">Tomás</button></div><div class="f" style="margin-top:10px"><div class="full"><label>Otro nombre</label><input id="pr_n" maxlength="20"></div></div><div class="acts"><button class="btn" data-a="close">Ahora no</button><button class="btn" data-a="prsetx">Guardar</button></div>`)}
+function presSet(n){n=(n||'').trim().slice(0,20);if(!n)return;PR.name=n;try{localStorage.setItem('pres_name',n)}catch(e){}closeModal();render();presPing()}
+if(STANDALONE){
+  clearInterval(PR.t);PR.t=setInterval(presPing,30000);
+  setTimeout(presPing,2500);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')presPing()});
+}
+
 /* ============ Acciones ============ */
 const A={
  go:e=>go(e.v),
@@ -782,7 +815,7 @@ const A={
  backup:()=>save('backup-estudio.json',JSON.stringify(D,null,1),'application/json'),
  restorebk:()=>modal(`<h2>Restaurar copia</h2><p class="sm mut">Pegá el contenido de un archivo de copia (JSON). Reemplaza los datos actuales.</p><textarea class="n" id="rb" style="min-height:200px"></textarea><div class="acts"><button class="btn" data-a="close">Cancelar</button><button class="btn p" data-a="dorestore">Restaurar</button></div>`),
  dorestore:()=>{try{const o=JSON.parse($('#rb').value);if(!o.settings)throw 0;D=o;persist();closeModal();toast('Copia restaurada ✔');render()}catch(e){toast('El contenido no es una copia válida')}},
- rall:e=>{U.sub.rall=!U.sub.rall;render()},repcopy:()=>{const x=repText(repData());modal(`<h2>Reporte</h2><textarea class="n" id="cp" style="min-height:360px">${esc(x)}</textarea><div class="acts"><button class="btn" data-a="close">Cerrar</button><button class="btn p" data-a="copy">Copiar</button></div>`)},repdl:()=>save('reporte-obras-'+today()+'.txt',repText(repData()),'text/plain'), syncnow:()=>syncNow(true),syncsave:()=>{SYN.cfg={url:$('#sy_url').value.trim(),token:$('#sy_tok').value.trim()};saveSyn();closeModal();render();syncNow(true)}, publish:publishCloud,ws:e=>switchWS(e.w),arqgo:arqGo,lock:lockArq,chpw:changePw,dochpw:doChangePw,
+ rall:e=>{U.sub.rall=!U.sub.rall;render()},repcopy:()=>{const x=repText(repData());modal(`<h2>Reporte</h2><textarea class="n" id="cp" style="min-height:360px">${esc(x)}</textarea><div class="acts"><button class="btn" data-a="close">Cerrar</button><button class="btn p" data-a="copy">Copiar</button></div>`)},repdl:()=>save('reporte-obras-'+today()+'.txt',repText(repData()),'text/plain'), prask:presAsk,prset:e=>presSet(e.v),prsetx:()=>presSet(($('#pr_n')||{}).value),syncnow:()=>syncNow(true),syncsave:()=>{SYN.cfg={url:$('#sy_url').value.trim(),token:$('#sy_tok').value.trim()};saveSyn();closeModal();render();syncNow(true)}, publish:publishCloud,ws:e=>switchWS(e.w),arqgo:arqGo,lock:lockArq,chpw:changePw,dochpw:doChangePw,
  wipe:()=>modal(`<h2>¿Vaciar datos de ejemplo?</h2><p>Se borran solo los registros de ejemplo. Tus obras reales (como La Botera), los ajustes y el equipo se conservan.</p><div class="acts"><button class="btn" data-a="close">Cancelar</button><button class="btn d" data-a="dowipe">Vaciar todo</button></div>`),
  dowipe:()=>{['clientes','proyectos','tareas','visitas','proveedores','compras','documentos','movimientos'].forEach(c=>D[c]=D[c].filter(x=>!x.ej));D.notas='';persist();closeModal();toast('Datos vaciados');render()}
 };
