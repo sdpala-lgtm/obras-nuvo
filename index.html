@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#002437"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#002437"><link rel="icon" id="favi" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nuvó · Arq. Paladino</title>
+<title>Nuvó · Gestión de obras</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -103,12 +103,62 @@ textarea.n{width:100%;min-height:120px;resize:vertical}
 .chip{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:3px 9px;margin:2px 4px 2px 0;font-size:12px;cursor:pointer}
 .sw{display:flex;gap:8px}.sw button{width:30px;height:30px;border-radius:50%;border:2px solid var(--line)}
 @media print{aside,.top,.demo,.acts,.btn{display:none!important}.ov{position:static;background:none;padding:0}.mod{box-shadow:none}}
+/* ===== Vista nueva, caja rápida, voz y estado de cuenta ===== */
+.sbox .mic{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:0;background:var(--soft);font-size:16px;display:grid;place-items:center;padding:0}
+.sbox .mic:hover{background:var(--ac)}
+.sbox input{padding-right:46px}
+#fab{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border-radius:50%;background:var(--ac);color:#fff;border:0;font-size:32px;font-weight:300;line-height:1;display:grid;place-items:center;box-shadow:0 8px 22px #0005;z-index:40;padding:0}
+#fab:active{transform:scale(.96)}
+#bbar{display:none}
+.mhead{display:none}
+.hhead{margin-bottom:12px}.hhead small{color:var(--mut);letter-spacing:.08em;text-transform:uppercase;font-size:11px}.hhead h1{font-size:30px;margin:2px 0}
+.spc{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}.spc .btn{padding:11px 16px}
+.hcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.hc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:left;min-height:104px;display:flex;flex-direction:column;gap:2px}
+.hc:hover{border-color:var(--ac)}.hc i{font-style:normal;font-size:26px;line-height:1.1;color:var(--ac)}.hc b{font-size:16px;font-weight:600}.hc small{color:var(--mut);font-size:12.5px}
+.mgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.mb{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:14px 12px;text-align:left;display:flex;gap:10px;align-items:center;min-height:52px;font-size:14px}
+.mb i{font-style:normal;font-size:20px;width:24px;text-align:center;flex:none}
+.mb:hover{border-color:var(--ac)}
+.rdoc{border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.rdoc,.rdoc *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rdoc table{width:100%;border-collapse:collapse}
+.rdoc td,.rdoc th{padding:6px 10px;border-bottom:1px solid #dce7ea;color:#1d1d1b;text-transform:none;letter-spacing:0;font-size:12px}
+.rdoc th{background:#227380;color:#fff;font-weight:bold;border-bottom:0;text-align:left}
+@media(max-width:700px){
+ body.vn aside{display:none}
+ body.vn #app{flex-direction:column}
+ body.vn .main{min-height:0}
+ body.vn .top{padding:10px 12px;gap:8px}
+ body.vn .top .tb{display:none}
+ body.vn .mhead{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px 0;background:var(--card)}
+ body.vn .mhead b{font-size:20px;font-weight:700;letter-spacing:.04em}
+ .wsm{display:flex;gap:6px}.wsm button{border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:8px 12px;font-size:13px;min-height:40px}.wsm button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+ body.vn #bbar{display:flex;position:fixed;left:0;right:0;bottom:0;height:64px;background:var(--card);border-top:1px solid var(--line);z-index:35}
+ body.vn #bbar button{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11.5px;color:var(--mut);min-height:48px}
+ body.vn #bbar button i{font-style:normal;font-size:22px;line-height:1}
+ body.vn #bbar button.on{color:var(--ac);font-weight:600}
+ body.vn .content{padding:14px 12px 100px}
+ body.vn #fab{bottom:78px;right:16px}
+ body.vn .mod{padding:18px}
+ body.vn .f{grid-template-columns:1fr}
+}
+@media print{
+ body.prep #app,body.prep #bbar,body.prep #fab,body.prep .toast{display:none!important}
+ body.prep .ov{position:static;background:none;padding:0;display:block;overflow:visible}
+ body.prep .mod{box-shadow:none;max-width:none;width:100%;padding:0;border-radius:0;background:#fff}
+ body.prep .mod>h2,body.prep .mod>p{display:none}
+ body.prep .rdoc{border:0;border-radius:0}
+ @page{size:A4;margin:12mm}
+}
+.rdoc{overflow-x:auto}.rdoc td:last-child{white-space:nowrap}
+.brand .logo.iso{background:#fff;padding:4px}.brand .logo.iso img{object-fit:contain}
 </style>
 </head>
 <body>
 <div id="app"></div>
-<div id="layer"></div>
-<script id="seed" type="application/json">{"nuvo": {"savedAt": 1, "reminders": true, "notas": "", "settings": {"estudio": "Nuvó Constructores", "titular": "Nuvó · Gestión integral de obra", "matricula": "", "subtitulo": "Villa del Dique · Río Cuarto · Calamuchita", "pais": "Argentina (GMT-3)", "tema": "claro", "acento": "#227380", "monedas": ["ARS", "USD"], "principal": "ARS", "etapas": ["Relevamiento y Concepto", "Anteproyecto y Diseño", "Proyecto Ejecutivo y Detalles", "Presupuesto y Compras", "Ejecución / Obra", "Entrega Final"], "tipologias": ["Galpón / Garaje náutico", "Vivienda Unifamiliar", "Vivienda Multifamiliar / Dúplex", "Refacción y Ampliación", "Piscina y Exteriores", "Local Comercial", "Interiorismo"], "tiposCliente": ["Comitente Particular", "Desarrolladora Inmobiliaria", "Fideicomiso", "Comitente Corporativo"], "rubros": ["Hormigón y Estructuras", "Corralón / Materiales", "Carpinterías", "Instalaciones Sanitarias", "Instalaciones Eléctricas", "Piscinas", "Herrería", "Paisajismo", "Mano de obra / Contratistas", "Zinguería", "Áridos", "Metalúrgica / Perfiles"], "catDoc": ["Planos Municipales", "Proyecto Ejecutivo", "Cómputo y Presupuesto", "Renders y Memoria", "Pliegos", "Contratos", "Seguimiento y planillas"]}, "equipo": [{"id": "e1", "nombre": "Arq. Diego Paladino", "rol": "Dirección técnica y de obra", "tipo": "Socio", "email": "arqpaladino@yahoo.com.ar", "tel": "3584114395", "activo": "Activo"}, {"id": "e2", "nombre": "Tomás", "rol": "Gestión legal y comercial · Caja chica de obra", "tipo": "Socio", "email": "nuvo.constructores@gmail.com", "tel": "3546436841", "activo": "Activo"}], "clientes": [], "proyectos": [], "tareas": [], "visitas": [], "proveedores": [], "compras": [], "documentos": [], "movimientos": []}, "arq": null, "ts": null, "arqInit": {"savedAt": 1, "reminders": true, "notas": "• Obras particulares fuera de Nuvó.", "settings": {"estudio": "Diego Paladino Arquitectura", "titular": "Arq. Diego Paladino", "matricula": "", "subtitulo": "Arquitecto · Director de Obra · Río Cuarto, Córdoba", "pais": "Argentina (GMT-3)", "tema": "claro", "acento": "#e8a21c", "monedas": ["USD", "ARS"], "principal": "USD", "etapas": ["Relevamiento y Concepto", "Anteproyecto y Diseño", "Proyecto Ejecutivo y Detalles", "Presupuesto y Compras", "Ejecución / Obra", "Entrega Final"], "tipologias": ["Galpón / Garaje náutico", "Vivienda Unifamiliar", "Vivienda Multifamiliar / Dúplex", "Refacción y Ampliación", "Piscina y Exteriores", "Local Comercial", "Interiorismo"], "tiposCliente": ["Comitente Particular", "Desarrolladora Inmobiliaria", "Fideicomiso", "Comitente Corporativo"], "rubros": ["Hormigón y Estructuras", "Corralón / Materiales", "Carpinterías", "Instalaciones Sanitarias", "Instalaciones Eléctricas", "Piscinas", "Herrería", "Paisajismo", "Mano de obra / Contratistas", "Zinguería", "Áridos", "Metalúrgica / Perfiles"], "catDoc": ["Planos Municipales", "Proyecto Ejecutivo", "Cómputo y Presupuesto", "Renders y Memoria", "Pliegos", "Contratos", "Seguimiento y planillas"]}, "equipo": [{"id": "e1", "nombre": "Arq. Diego Paladino", "rol": "Arquitecto Director · Proyecto y Dirección de Obra", "tipo": "Titular", "email": "arqpaladino@yahoo.com.ar", "tel": "3584114395", "activo": "Activo"}], "clientes": [{"id": "c1", "codigo": "CLI-001", "nombre": "Cliente de ejemplo A", "cuit": "", "tipo": "Comitente Particular", "tel": "+54 358 000-0000", "email": "cliente.a@ejemplo.com", "estado": "Activo", "domicilio": "Río Cuarto, Córdoba", "notas": "Dato de ejemplo: reemplazalo o usá “Vaciar datos de ejemplo” en Configuración.", "ej": true}, {"id": "c2", "codigo": "CLI-002", "nombre": "Desarrolladora de ejemplo", "cuit": "", "tipo": "Desarrolladora Inmobiliaria", "tel": "", "email": "", "estado": "Activo", "domicilio": "Villa del Dique", "notas": "", "ej": true}, {"id": "c3", "codigo": "CLI-003", "nombre": "Prospecto de ejemplo", "cuit": "", "tipo": "Comitente Particular", "tel": "", "email": "", "estado": "Prospecto", "domicilio": "", "notas": "", "ej": true}], "proyectos": [{"id": "p1", "codigo": "OBR-2026-01", "nombre": "Vivienda de ejemplo", "clienteId": "c1", "tipologia": "Vivienda Unifamiliar", "responsableId": "e1", "superficie": 180, "ubicacion": "Río Cuarto", "estado": "En Obra", "etapa": 4, "inicio": "2026-07-25", "entrega": "2027-01-06", "honorarios": 24000, "moneda": "USD", "drive": "", "descripcion": "Proyecto de ejemplo con obra en ejecución.", "comentarios": [], "ej": true}, {"id": "p2", "codigo": "OBR-2026-02", "nombre": "Dúplex de ejemplo", "clienteId": "c2", "tipologia": "Vivienda Multifamiliar / Dúplex", "responsableId": "e1", "superficie": 260, "ubicacion": "Villa del Dique", "estado": "En Diseño", "etapa": 2, "inicio": "2026-09-23", "entrega": "2027-01-31", "honorarios": 18000, "moneda": "USD", "drive": "", "descripcion": "", "comentarios": [], "ej": true}, {"id": "p3", "codigo": "OBR-2026-03", "nombre": "Refacción de ejemplo", "clienteId": "c1", "tipologia": "Refacción y Ampliación", "responsableId": "e1", "superficie": 95, "ubicacion": "Río Cuarto", "estado": "En Licitación", "etapa": 3, "inicio": "2026-10-23", "entrega": "2026-12-17", "honorarios": 4200000, "moneda": "ARS", "drive": "", "descripcion": "", "comentarios": [], "ej": true}], "tareas": [{"id": "t1", "titulo": "Inspección de armaduras antes del colado", "proyectoId": "p1", "responsableId": "e1", "vence": "2026-11-19", "prioridad": "Urgente", "estado": "En curso", "notas": "", "ej": true}, {"id": "t2", "titulo": "Planilla de carpinterías", "proyectoId": "p2", "responsableId": "e1", "vence": "2026-11-21", "prioridad": "Alta", "estado": "Por realizar", "notas": "", "ej": true}, {"id": "t3", "titulo": "Cuadro comparativo de ofertas de contratistas", "proyectoId": "p3", "responsableId": "e1", "vence": "2026-11-26", "prioridad": "Alta", "estado": "En curso", "notas": "", "ej": true}, {"id": "t4", "titulo": "Aprobación de muestra de revestimiento", "proyectoId": "p1", "responsableId": "e1", "vence": "2026-11-12", "prioridad": "Media", "estado": "Completada", "notas": "", "ej": true}, {"id": "t5", "titulo": "Presentación de anteproyecto al cliente", "proyectoId": "p2", "responsableId": "e2", "vence": "2026-11-29", "prioridad": "Media", "estado": "Por realizar", "notas": "", "ej": true}], "visitas": [{"id": "v1", "titulo": "Visita de obra: control de mampostería", "tipo": "Visita de obra", "proyectoId": "p1", "fecha": "2026-11-23", "hora": "10:00", "estado": "Programada", "lugar": "Obra", "notas": "", "ej": true}, {"id": "v2", "titulo": "Reunión con comitente", "tipo": "Reunión con comitente", "proyectoId": "p2", "fecha": "2026-11-25", "hora": "16:30", "estado": "Programada", "lugar": "Estudio", "notas": "", "ej": true}, {"id": "v3", "titulo": "Visita de obra: recepción de armaduras", "tipo": "Visita de obra", "proyectoId": "p1", "fecha": "2026-11-16", "hora": "09:30", "estado": "Finalizada", "lugar": "Obra", "notas": "Todo conforme.", "ej": true}], "proveedores": [{"id": "r1", "codigo": "PRV-001", "nombre": "Hormigonera de ejemplo", "rubro": "Hormigón y Estructuras", "cuit": "", "contacto": "Contacto", "tel": "", "email": "", "notas": "", "ej": true}, {"id": "r2", "codigo": "PRV-002", "nombre": "Corralón de ejemplo", "rubro": "Corralón / Materiales", "cuit": "", "contacto": "", "tel": "", "email": "", "notas": "", "ej": true}], "compras": [{"id": "o1", "concepto": "Hormigón elaborado H-21 para losa", "codigo": "OC-2026-001", "proveedorId": "r1", "proyectoId": "p1", "fecha": "2026-11-08", "importe": 3200, "moneda": "USD", "estado": "Abonado", "link": "", "ej": true}, {"id": "o2", "concepto": "Acopio de materiales de mampostería", "codigo": "OC-2026-002", "proveedorId": "r2", "proyectoId": "p1", "fecha": "2026-11-17", "importe": 2900000, "moneda": "ARS", "estado": "Encargado", "link": "", "ej": true}], "documentos": [{"id": "d1", "titulo": "Planta general y cortes", "codigo": "ARQ-PL-01", "categoria": "Proyecto Ejecutivo", "proyectoId": "p1", "estado": "Aprobado por cliente", "rev": "Rev. 02", "fecha": "2026-10-13", "link": "", "ej": true}, {"id": "d2", "titulo": "Cómputo y presupuesto", "codigo": "CYP-01", "categoria": "Cómputo y Presupuesto", "proyectoId": "p3", "estado": "Borrador", "rev": "Rev. 01", "fecha": "2026-11-18", "link": "", "ej": true}], "movimientos": [{"id": "m1", "concepto": "Anticipo de honorarios — Vivienda de ejemplo", "tipo": "Ingreso", "fecha": "2026-08-14", "proyectoId": "p1", "clienteId": "c1", "categoria": "Honorarios", "comprobante": "FAC-0001", "importe": 8000, "moneda": "USD", "estado": "Finalizado", "ej": true}, {"id": "m2", "concepto": "Certificación #2 dirección de obra", "tipo": "Ingreso", "fecha": "2026-11-02", "proyectoId": "p1", "clienteId": "c1", "categoria": "Honorarios", "comprobante": "FAC-0002", "importe": 6000, "moneda": "USD", "estado": "Facturado", "ej": true}, {"id": "m3", "concepto": "Hito 1 anteproyecto — Dúplex", "tipo": "Ingreso", "fecha": "2026-10-23", "proyectoId": "p2", "clienteId": "c2", "categoria": "Honorarios", "comprobante": "FAC-0003", "importe": 5400, "moneda": "USD", "estado": "Finalizado", "ej": true}, {"id": "m4", "concepto": "Asesor de cálculo estructural", "tipo": "Gasto", "fecha": "2026-10-28", "proyectoId": "p2", "clienteId": "", "categoria": "Asesores", "comprobante": "", "importe": 1200, "moneda": "USD", "estado": "Finalizado", "ej": true}, {"id": "m5", "concepto": "Honorarios refacción (anticipo)", "tipo": "Ingreso", "fecha": "2026-11-07", "proyectoId": "p3", "clienteId": "c1", "categoria": "Honorarios", "comprobante": "", "importe": 1200000, "moneda": "ARS", "estado": "Finalizado", "ej": true}]}}</script>
+<div id="layer"></div><div id="bbar"></div><button id="fab" data-a="qcaja" aria-label="Cargar movimiento">+</button>
+<script id="seed" type="application/json">{"nuvo": {"savedAt": 1, "reminders": true, "notas": "", "settings": {"estudio": "Nuvó Constructores", "titular": "Nuvó · Gestión integral de obra", "matricula": "", "subtitulo": "Villa del Dique · Río Cuarto · Calamuchita", "pais": "Argentina (GMT-3)", "tema": "claro", "acento": "#227380", "monedas": ["ARS", "USD"], "principal": "ARS", "etapas": ["Relevamiento y Concepto", "Anteproyecto y Diseño", "Proyecto Ejecutivo y Detalles", "Presupuesto y Compras", "Ejecución / Obra", "Entrega Final"], "tipologias": ["Galpón / Garaje náutico", "Vivienda Unifamiliar", "Vivienda Multifamiliar / Dúplex", "Refacción y Ampliación", "Piscina y Exteriores", "Local Comercial", "Interiorismo"], "tiposCliente": ["Comitente Particular", "Desarrolladora Inmobiliaria", "Fideicomiso", "Comitente Corporativo"], "rubros": ["Hormigón y Estructuras", "Corralón / Materiales", "Carpinterías", "Instalaciones Sanitarias", "Instalaciones Eléctricas", "Piscinas", "Herrería", "Paisajismo", "Mano de obra / Contratistas", "Zinguería", "Áridos", "Metalúrgica / Perfiles"], "catDoc": ["Planos Municipales", "Proyecto Ejecutivo", "Cómputo y Presupuesto", "Renders y Memoria", "Pliegos", "Contratos", "Seguimiento y planillas"]}, "equipo": [{"id": "e1", "nombre": "Arq. Diego Paladino", "rol": "Dirección técnica y de obra", "tipo": "Socio", "email": "arqpaladino@yahoo.com.ar", "tel": "3584114395", "activo": "Activo"}, {"id": "e2", "nombre": "Tomás", "rol": "Gestión legal y comercial · Caja chica de obra", "tipo": "Socio", "email": "nuvo.constructores@gmail.com", "tel": "3546436841", "activo": "Activo"}], "clientes": [], "proyectos": [], "tareas": [], "visitas": [], "proveedores": [], "compras": [], "documentos": [], "movimientos": []}, "arq": null, "ts": null, "arqInit": {"savedAt": 1, "reminders": true, "notas": "• Obras particulares fuera de Nuvó.", "settings": {"estudio": "Diego Paladino Arquitectura", "titular": "Diego Paladino", "matricula": "", "subtitulo": "Arquitecto · Director de Obra · Río Cuarto, Córdoba", "pais": "Argentina (GMT-3)", "tema": "claro", "acento": "#e8a21c", "monedas": ["USD", "ARS"], "principal": "USD", "etapas": ["Relevamiento y Concepto", "Anteproyecto y Diseño", "Proyecto Ejecutivo y Detalles", "Presupuesto y Compras", "Ejecución / Obra", "Entrega Final"], "tipologias": ["Galpón / Garaje náutico", "Vivienda Unifamiliar", "Vivienda Multifamiliar / Dúplex", "Refacción y Ampliación", "Piscina y Exteriores", "Local Comercial", "Interiorismo"], "tiposCliente": ["Comitente Particular", "Desarrolladora Inmobiliaria", "Fideicomiso", "Comitente Corporativo"], "rubros": ["Hormigón y Estructuras", "Corralón / Materiales", "Carpinterías", "Instalaciones Sanitarias", "Instalaciones Eléctricas", "Piscinas", "Herrería", "Paisajismo", "Mano de obra / Contratistas", "Zinguería", "Áridos", "Metalúrgica / Perfiles"], "catDoc": ["Planos Municipales", "Proyecto Ejecutivo", "Cómputo y Presupuesto", "Renders y Memoria", "Pliegos", "Contratos", "Seguimiento y planillas"]}, "equipo": [{"id": "e1", "nombre": "Arq. Diego Paladino", "rol": "Arquitecto Director · Proyecto y Dirección de Obra", "tipo": "Titular", "email": "arqpaladino@yahoo.com.ar", "tel": "3584114395", "activo": "Activo"}], "clientes": [{"id": "c1", "codigo": "CLI-001", "nombre": "Cliente de ejemplo A", "cuit": "", "tipo": "Comitente Particular", "tel": "+54 358 000-0000", "email": "cliente.a@ejemplo.com", "estado": "Activo", "domicilio": "Río Cuarto, Córdoba", "notas": "Dato de ejemplo: reemplazalo o usá “Vaciar datos de ejemplo” en Configuración.", "ej": true}, {"id": "c2", "codigo": "CLI-002", "nombre": "Desarrolladora de ejemplo", "cuit": "", "tipo": "Desarrolladora Inmobiliaria", "tel": "", "email": "", "estado": "Activo", "domicilio": "Villa del Dique", "notas": "", "ej": true}, {"id": "c3", "codigo": "CLI-003", "nombre": "Prospecto de ejemplo", "cuit": "", "tipo": "Comitente Particular", "tel": "", "email": "", "estado": "Prospecto", "domicilio": "", "notas": "", "ej": true}], "proyectos": [{"id": "p1", "codigo": "OBR-2026-01", "nombre": "Vivienda de ejemplo", "clienteId": "c1", "tipologia": "Vivienda Unifamiliar", "responsableId": "e1", "superficie": 180, "ubicacion": "Río Cuarto", "estado": "En Obra", "etapa": 4, "inicio": "2026-07-25", "entrega": "2027-01-06", "honorarios": 24000, "moneda": "USD", "drive": "", "descripcion": "Proyecto de ejemplo con obra en ejecución.", "comentarios": [], "ej": true}, {"id": "p2", "codigo": "OBR-2026-02", "nombre": "Dúplex de ejemplo", "clienteId": "c2", "tipologia": "Vivienda Multifamiliar / Dúplex", "responsableId": "e1", "superficie": 260, "ubicacion": "Villa del Dique", "estado": "En Diseño", "etapa": 2, "inicio": "2026-09-23", "entrega": "2027-01-31", "honorarios": 18000, "moneda": "USD", "drive": "", "descripcion": "", "comentarios": [], "ej": true}, {"id": "p3", "codigo": "OBR-2026-03", "nombre": "Refacción de ejemplo", "clienteId": "c1", "tipologia": "Refacción y Ampliación", "responsableId": "e1", "superficie": 95, "ubicacion": "Río Cuarto", "estado": "En Licitación", "etapa": 3, "inicio": "2026-10-23", "entrega": "2026-12-17", "honorarios": 4200000, "moneda": "ARS", "drive": "", "descripcion": "", "comentarios": [], "ej": true}], "tareas": [{"id": "t1", "titulo": "Inspección de armaduras antes del colado", "proyectoId": "p1", "responsableId": "e1", "vence": "2026-11-19", "prioridad": "Urgente", "estado": "En curso", "notas": "", "ej": true}, {"id": "t2", "titulo": "Planilla de carpinterías", "proyectoId": "p2", "responsableId": "e1", "vence": "2026-11-21", "prioridad": "Alta", "estado": "Por realizar", "notas": "", "ej": true}, {"id": "t3", "titulo": "Cuadro comparativo de ofertas de contratistas", "proyectoId": "p3", "responsableId": "e1", "vence": "2026-11-26", "prioridad": "Alta", "estado": "En curso", "notas": "", "ej": true}, {"id": "t4", "titulo": "Aprobación de muestra de revestimiento", "proyectoId": "p1", "responsableId": "e1", "vence": "2026-11-12", "prioridad": "Media", "estado": "Completada", "notas": "", "ej": true}, {"id": "t5", "titulo": "Presentación de anteproyecto al cliente", "proyectoId": "p2", "responsableId": "e2", "vence": "2026-11-29", "prioridad": "Media", "estado": "Por realizar", "notas": "", "ej": true}], "visitas": [{"id": "v1", "titulo": "Visita de obra: control de mampostería", "tipo": "Visita de obra", "proyectoId": "p1", "fecha": "2026-11-23", "hora": "10:00", "estado": "Programada", "lugar": "Obra", "notas": "", "ej": true}, {"id": "v2", "titulo": "Reunión con comitente", "tipo": "Reunión con comitente", "proyectoId": "p2", "fecha": "2026-11-25", "hora": "16:30", "estado": "Programada", "lugar": "Estudio", "notas": "", "ej": true}, {"id": "v3", "titulo": "Visita de obra: recepción de armaduras", "tipo": "Visita de obra", "proyectoId": "p1", "fecha": "2026-11-16", "hora": "09:30", "estado": "Finalizada", "lugar": "Obra", "notas": "Todo conforme.", "ej": true}], "proveedores": [{"id": "r1", "codigo": "PRV-001", "nombre": "Hormigonera de ejemplo", "rubro": "Hormigón y Estructuras", "cuit": "", "contacto": "Contacto", "tel": "", "email": "", "notas": "", "ej": true}, {"id": "r2", "codigo": "PRV-002", "nombre": "Corralón de ejemplo", "rubro": "Corralón / Materiales", "cuit": "", "contacto": "", "tel": "", "email": "", "notas": "", "ej": true}], "compras": [{"id": "o1", "concepto": "Hormigón elaborado H-21 para losa", "codigo": "OC-2026-001", "proveedorId": "r1", "proyectoId": "p1", "fecha": "2026-11-08", "importe": 3200, "moneda": "USD", "estado": "Abonado", "link": "", "ej": true}, {"id": "o2", "concepto": "Acopio de materiales de mampostería", "codigo": "OC-2026-002", "proveedorId": "r2", "proyectoId": "p1", "fecha": "2026-11-17", "importe": 2900000, "moneda": "ARS", "estado": "Encargado", "link": "", "ej": true}], "documentos": [{"id": "d1", "titulo": "Planta general y cortes", "codigo": "ARQ-PL-01", "categoria": "Proyecto Ejecutivo", "proyectoId": "p1", "estado": "Aprobado por cliente", "rev": "Rev. 02", "fecha": "2026-10-13", "link": "", "ej": true}, {"id": "d2", "titulo": "Cómputo y presupuesto", "codigo": "CYP-01", "categoria": "Cómputo y Presupuesto", "proyectoId": "p3", "estado": "Borrador", "rev": "Rev. 01", "fecha": "2026-11-18", "link": "", "ej": true}], "movimientos": [{"id": "m1", "concepto": "Anticipo de honorarios — Vivienda de ejemplo", "tipo": "Ingreso", "fecha": "2026-08-14", "proyectoId": "p1", "clienteId": "c1", "categoria": "Honorarios", "comprobante": "FAC-0001", "importe": 8000, "moneda": "USD", "estado": "Finalizado", "ej": true}, {"id": "m2", "concepto": "Certificación #2 dirección de obra", "tipo": "Ingreso", "fecha": "2026-11-02", "proyectoId": "p1", "clienteId": "c1", "categoria": "Honorarios", "comprobante": "FAC-0002", "importe": 6000, "moneda": "USD", "estado": "Facturado", "ej": true}, {"id": "m3", "concepto": "Hito 1 anteproyecto — Dúplex", "tipo": "Ingreso", "fecha": "2026-10-23", "proyectoId": "p2", "clienteId": "c2", "categoria": "Honorarios", "comprobante": "FAC-0003", "importe": 5400, "moneda": "USD", "estado": "Finalizado", "ej": true}, {"id": "m4", "concepto": "Asesor de cálculo estructural", "tipo": "Gasto", "fecha": "2026-10-28", "proyectoId": "p2", "clienteId": "", "categoria": "Asesores", "comprobante": "", "importe": 1200, "moneda": "USD", "estado": "Finalizado", "ej": true}, {"id": "m5", "concepto": "Honorarios refacción (anticipo)", "tipo": "Ingreso", "fecha": "2026-11-07", "proyectoId": "p3", "clienteId": "c1", "categoria": "Honorarios", "comprobante": "", "importe": 1200000, "moneda": "ARS", "estado": "Finalizado", "ej": true}]}}</script>
 <script>
 "use strict";
 /* ============ Utilidades ============ */
@@ -152,7 +202,7 @@ async function switchWS(w){
   if(w==='nuvo'){AW='nuvo';CK=null;D=W.nuvo;resetUI();render()}else privGate(w);
 }
 function resetUI(){U.view='dashboard';U.sub={};U.q={};U.cur='';U.sel=null}
-const PRIV={arq:{n:'Arq. Paladino',d:'Espacio privado para tus obras particulares, fuera de Nuvó. Creá una contraseña: los datos se guardan cifrados y nadie más puede leerlos, ni Tomás.',e:'Ingresá tu contraseña para abrir tus obras particulares.'},ts:{n:'TS',d:'Espacio privado de Tomás Scoles. Creá una contraseña: los datos se guardan cifrados y nadie más puede leerlos, ni Diego.',e:'Ingresá tu contraseña para abrir el espacio TS.'}};
+const PRIV={arq:{n:'DP',d:'Espacio privado de Diego Paladino (DP) para tus obras y tu estudio, fuera de Nuvó. Creá una contraseña: los datos se guardan cifrados y nadie más puede leerlos, ni Tomás.',e:'Ingresá tu contraseña para abrir el espacio DP.'},ts:{n:'TS',d:'Espacio privado de Tomás Scoles. Creá una contraseña: los datos se guardan cifrados y nadie más puede leerlos, ni Diego.',e:'Ingresá tu contraseña para abrir el espacio TS.'}};
 let GT='arq';
 function privGate(w,msg){
   if(w)GT=w;const P=PRIV[GT],nuevo=!W[GT];
@@ -235,7 +285,7 @@ DEF.proyectos=()=>({codigo:pcode(),estado:'En Diseño',etapa:0,moneda:S().princi
 /* ============ Render base ============ */
 const NAV=[['dashboard','Dashboard','▦'],['clientes','Clientes','☺'],['proyectos','Proyectos','◎'],['tareas','Tareas','☑'],['cronograma','Cronograma','≋'],['agenda','Visitas y Agenda','▤'],['proveedores','Proveedores','⛟'],['compras','Compras y Pedidos','⛁'],['documentos','Documentos','▭'],['finanzas','Finanzas','$'],['reporte','Reporte de obras','≡'],['equipo','Equipo','☻']];
 function go(v,sub){if(v==='cronograma'&&U.view!=='cronograma')U.gsl=null;U.view=v;U.sub=sub||{};U.sel=null;try{history.replaceState(null,'','#'+v)}catch(e){}render();try{presPing()}catch(e){}const c=$('.content');if(c)c.scrollTop=0}
-function applyTheme(){document.body.classList.toggle('dark',S().tema==='oscuro');document.documentElement.style.setProperty('--ac',S().acento);document.title=S().estudio+' — Workspace'}
+function applyTheme(){document.body.classList.toggle('dark',S().tema==='oscuro');document.documentElement.style.setProperty('--ac',S().acento);document.title=(AW==='nuvo'?'Nuvó':PRIV[AW].n)+' · Gestión de obras';try{const f=document.getElementById('favi');if(f)f.href=AW==='nuvo'?'favicon-32.png':'dp-favicon-32.png'}catch(e){}}
 function notifs(){
   const t=today(),out=[];
   live('tareas').filter(x=>taskState(x)==='Atrasada').forEach(x=>out.push({k:'tareas',txt:'Tarea atrasada: '+x.titulo,sub:nm('proyectos',x.proyectoId)+' · venció '+fd(x.vence)}));
@@ -245,24 +295,24 @@ function notifs(){
   return out;
 }
 function render(){
-  applyTheme();
+  ensureD(D);applyTheme();
   const s=S(),n=D.reminders?notifs().length:0;
-  const logo=s.logo?`<img src="${s.logo}">`:esc(initials(s.estudio));
+  const logo=s.logo?`<img src="${s.logo}">`:`<img src="${AW==='nuvo'?IMG_NUVO:IMG_DP}" alt="">`;
   $('#app').innerHTML=`
-  <aside><div class="brand"><div class="logo">${logo}</div><div><b>${esc(s.estudio.toUpperCase().slice(0,22))}</b><small>| WORKSPACE</small></div></div>
-  <div class="wsw"><button data-a="ws" data-w="nuvo" class="${AW==='nuvo'?'on':''}">Nuvó</button><button data-a="ws" data-w="arq" class="${AW==='arq'?'on':''}">🔒 Arq. Paladino</button><button data-a="ws" data-w="ts" class="${AW==='ts'?'on':''}">🔒 TS</button></div>
+  <aside><div class="brand"><div class="logo${s.logo?'':' iso'}">${logo}</div><div><b>NUVÓ</b><small>${AW==='nuvo'?'| GESTIÓN INTEGRAL DE OBRA':'| '+esc(PRIV[AW].n)+' · PRIVADO'}</small></div></div>
+  <div class="wsw"><button data-a="ws" data-w="nuvo" class="${AW==='nuvo'?'on':''}">Nuvó</button><button data-a="ws" data-w="arq" class="${AW==='arq'?'on':''}">🔒 DP</button><button data-a="ws" data-w="ts" class="${AW==='ts'?'on':''}">🔒 TS</button></div>
   <nav class="nav">${NAV.map(([k,l,i])=>`<button data-a="go" data-v="${k}" class="${U.view===k?'on':''}"><span>${i}</span><span class="t">${l}</span></button>`).join('')}</nav>
   <div class="foot"><button data-a="go" data-v="papelera" class="${U.view==='papelera'?'on':''}">🗑 <span class="t">Papelera</span></button><button data-a="settings">⚙ <span class="t">Configuración</span></button>
   <div class="me"><div class="av">${esc(initials(s.titular))}</div><div><b style="color:#fff">${esc(s.titular)}</b><br><span style="color:#8fa0b2">${esc(s.estudio)}</span></div></div></div></aside>
-  <div class="main"><div class="top"><div class="sbox"><input id="gs" placeholder="Buscar clientes, proyectos, tareas…" autocomplete="off"><div id="sr"></div></div>
-   ${AW!=='nuvo'?'<button class="tb" data-a="lock">🔒 Bloquear</button><button class="tb" data-a="chpw">🔑 Contraseña</button>':''}${presHTML()}${STANDALONE&&SYN.cfg.url?`<button class="tb" data-a="syncnow">☁ ${esc(SYN.msg||'Sincronizar')}</button>`:''}<button class="tb" data-a="theme">${s.tema==='oscuro'?'☀ Claro':'☾ Oscuro'}</button>
+  <div class="main">${mheadHTML()}<div class="top"><div class="sbox"><input id="gs" placeholder="Buscar o pedir algo…" autocomplete="off"><button class="mic" data-a="voz" aria-label="Pedir por voz">🎤</button><div id="sr"></div></div>
+   ${AW!=='nuvo'?'<button class="tb" data-a="lock">🔒 Bloquear</button><button class="tb" data-a="chpw">🔑 Contraseña</button>':''}${presHTML()}${STANDALONE&&SYN.cfg.url?`<button class="tb" data-a="syncnow">☁ ${esc(SYN.msg||'Sincronizar')}</button>`:''}<button class="tb" data-a="vista">▦ Vista: ${VM()==='nueva'?'nueva':'clásica'}</button><button class="tb" data-a="theme">${s.tema==='oscuro'?'☀ Claro':'☾ Oscuro'}</button>
    <button class="tb ${D.reminders?'on':''}" data-a="rem">⏰ Recordatorios: ${D.reminders?'Sí':'No'}</button>
    <button class="tb" data-a="notif">🔔 Notificaciones${n?`<span class="badge">${n}</span>`:''}</button>
    <button class="tb" data-a="help">? Instructivo</button></div>
   <div class="content" id="content"></div></div>`;
   const V={dashboard:vDash,clientes:vClientes,proyectos:vProyectos,tareas:vTareas,cronograma:vCrono,agenda:vAgenda,proveedores:vProv,compras:vCompras,documentos:vDocs,finanzas:vFin,reporte:vReporte,equipo:vEquipo,papelera:vTrash}[U.view];
   $('#content').innerHTML=V();ganttScroll();
-  bindSearch();
+  bindSearch();paintShell();
 }
 function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
 function modal(html,w){const l=$('#layer');l.innerHTML=`<div class="ov" data-a="ovclose"><div class="mod ${w?'w':''}">${html}</div></div>`}
@@ -292,7 +342,7 @@ function vDash(){
   const evs=wk.map(d=>dayEvents(d));
   const sel=U.sub.wd||(wk.includes(today())?today():wk[0]);
   const ECOL={};const E=S().etapas;
-  return `<div class="hero" style="${s.portada?`background-image:linear-gradient(120deg,#14202bcc,#14202b55),url(${s.portada})`:''}">
+  return homeCards()+`<div class="hero" style="${s.portada?`background-image:linear-gradient(120deg,#14202bcc,#14202b55),url(${s.portada})`:''}">
     <div><small>${esc(s.subtitulo)}</small><h2>${esc(s.estudio)}</h2></div><div class="acts"><button class="btn" data-a="settings">✎ Personalizar</button></div></div>
   <div class="head"><h1 style="font-size:22px">Panel de Control · ${esc(s.titular)}</h1><div class="row" style="gap:8px"><button class="btn p" data-a="new" data-c="proyectos">+ Nuevo proyecto</button><button class="btn" data-a="new" data-c="tareas">+ Nueva tarea</button></div></div>
   <div class="grid g4" style="margin-bottom:14px">
@@ -409,9 +459,9 @@ function vProyecto(id){
   if(tab==='visitas')body=`<div class="card"><div class="row"><h2>Visitas y bitácora (${vs.length})</h2><button class="btn p s" data-a="newvis" data-p="${id}">+ Agendar visita</button></div>${vs.map(v=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="visitas" data-id="${v.id}"><div><b>${esc(v.titulo)}</b><br><small class="mut">${fd(v.fecha)} · ${v.hora||''} hs ${esc(v.notas||'')}</small></div>${pill(v.estado)}</div>`).join('')||'<p class="mut">Sin visitas.</p>'}</div>`;
   if(tab==='docs')body=`<div class="card"><div class="row"><h2>Documentación y entregas (${dc.length})</h2><button class="btn p s" data-a="newin" data-c="documentos" data-p="${id}">+ Subir</button></div>${dc.map(d=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="documentos" data-id="${d.id}"><div><b>${esc(d.titulo)}</b><br><small class="mut">${esc(d.categoria||'')} · ${esc(d.rev||'')}</small></div>${pill(d.estado)}</div>`).join('')||'<p class="mut">Sin documentos.</p>'}</div>`;
   if(tab==='compras')body=`<div class="card"><div class="row"><h2>Compras (${cp.length})</h2><button class="btn p s" data-a="newin" data-c="compras" data-p="${id}">+ Nueva compra</button></div>${cp.map(c=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="compras" data-id="${c.id}"><div><b>${esc(c.concepto)}</b><br><small class="mut">${esc(nm('proveedores',c.proveedorId))} · ${fd(c.fecha)}</small></div><div>${pill(c.estado)} <b>${money(c.importe,c.moneda)}</b></div></div>`).join('')||'<p class="mut">Sin compras.</p>'}</div>`;
-  if(tab==='fin')body=`<div class="card"><div class="row"><h2>Finanzas (${mv.length})</h2><button class="btn p s" data-a="newin" data-c="movimientos" data-p="${id}">+ Registrar movimiento</button></div>${mv.map(m=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="movimientos" data-id="${m.id}"><div><b>${esc(m.concepto)}</b><br><small class="mut">${fd(m.fecha)} · ${esc(m.comprobante||'')}</small></div><div>${pill(m.estado)} <b class="${m.tipo==='Gasto'?'bad-t':'ok-t'}">${m.tipo==='Gasto'?'−':'+'}${money(m.importe,m.moneda)}</b></div></div>`).join('')||'<p class="mut">Sin movimientos.</p>'}</div>`;
+  if(tab==='fin')body=finCuentaHTML(p)+`<div class="card"><div class="row"><h2>Finanzas (${mv.length})</h2><button class="btn p s" data-a="newin" data-c="movimientos" data-p="${id}">+ Registrar movimiento</button></div>${mv.map(m=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="movimientos" data-id="${m.id}"><div><b>${esc(m.concepto)}</b><br><small class="mut">${fd(m.fecha)} · ${esc(m.comprobante||'')}${m.link?` · <a data-a="nop" href="${esc(m.link)}" target="_blank" rel="noopener">comprobante ↗</a>`:''}</small></div><div>${pill(m.estado)} <b class="${m.tipo==='Gasto'?'bad-t':'ok-t'}">${m.tipo==='Gasto'?'−':'+'}${money(m.importe,m.moneda)}</b></div></div>`).join('')||'<p class="mut">Sin movimientos.</p>'}</div>`;
   const tabs=[['resumen','Resumen general'],['tareas','Tareas ('+tk.length+')'],['visitas','Visitas y bitácora ('+vs.length+')'],['docs','Documentos ('+dc.length+')'],['compras','Compras ('+cp.length+')'],['fin','Finanzas ('+mv.length+')']];
-  return `<div class="head"><button class="btn" data-a="back">← Volver a Proyectos</button><div class="row" style="gap:8px;flex-wrap:wrap"><select data-a="pstate" data-id="${id}">${OPT.pstate.map(o=>`<option ${p.estado===o?'selected':''}>${o}</option>`).join('')}</select><button class="btn" data-a="gproj" data-id="${id}">Cronograma</button><button class="btn g" data-a="report" data-id="${id}">Reporte para el cliente</button><button class="btn" data-a="cover" data-id="${id}">Portada</button><button class="btn" data-a="edit" data-c="proyectos" data-id="${id}">Editar proyecto</button><button class="btn d" data-a="del" data-c="proyectos" data-id="${id}">Papelera</button></div></div>
+  return `<div class="head"><button class="btn" data-a="back">← Volver a Proyectos</button><div class="row" style="gap:8px;flex-wrap:wrap"><select data-a="pstate" data-id="${id}">${OPT.pstate.map(o=>`<option ${p.estado===o?'selected':''}>${o}</option>`).join('')}</select><button class="btn" data-a="gproj" data-id="${id}">Cronograma</button><button class="btn g" data-a="report" data-id="${id}">Reporte para el cliente</button><button class="btn g" data-a="repcli" data-id="${id}">Estado de cuenta (PDF)</button><button class="btn" data-a="cover" data-id="${id}">Portada</button><button class="btn" data-a="edit" data-c="proyectos" data-id="${id}">Editar proyecto</button><button class="btn d" data-a="del" data-c="proyectos" data-id="${id}">Papelera</button></div></div>
   <div class="cover" style="${p.portada?`background-image:url(${p.portada})`:''}"><button class="btn" data-a="cover" data-id="${id}">Cambiar portada</button></div>
   <div class="card" style="margin-bottom:14px"><span class="pill warn">${esc(p.codigo)}</span> <span class="pill">${esc(p.tipologia||'')}</span> <span class="pill">Responsable: ${esc(nm('equipo',p.responsableId))}</span> ${pill(p.estado)}<div class="row"><div><h1>${esc(p.nombre)}</h1><small class="mut">Cliente: <b>${esc(nm('clientes',p.clienteId))}</b> · ${esc(p.ubicacion||'')} · ${p.superficie||'—'} m²</small></div>${p.drive?`<a class="btn" href="${esc(p.drive)}" target="_blank" rel="noopener">Abrir carpeta Drive ↗</a>`:''}</div></div>
   <div class="tabs">${tabs.map(([k,l])=>`<button class="tab ${tab===k?'on':''}" data-a="tab" data-v="${k}">${l}</button>`).join('')}</div>${body}`;
@@ -491,7 +541,7 @@ function vFin(){
   `<div class="grid g3" style="margin-bottom:14px"><div class="card"><small class="mut">Honorarios cobrados (${cur})</small><div class="kpi n ok-t" style="font-size:28px;font-weight:600">${money(ft.cob,cur)}</div></div><div class="card"><small class="mut">Facturado / pendiente (${cur})</small><div class="warn-t" style="font-size:28px;font-weight:600">${money(ft.pen,cur)}</div></div><div class="card"><small class="mut">Gastos y asesores (${cur})</small><div class="bad-t" style="font-size:28px;font-weight:600">${money(ft.gas,cur)}</div></div></div>
   <div class="card" style="margin-bottom:14px"><h3>Reparto del período (${cur})</h3><div class="split"><i style="width:${ft.cob/tot*100}%;background:var(--ok)"></i><i style="width:${ft.pen/tot*100}%;background:var(--ac)"></i><i style="width:${ft.gas/tot*100}%;background:var(--bad)"></i></div><small class="mut">● Cobrado ${Math.round(ft.cob/tot*100)}% · ● Pendiente ${Math.round(ft.pen/tot*100)}% · ● Gastos ${Math.round(ft.gas/tot*100)}%</small></div>
   <div class="tools"><input data-a="q" data-k="mv" value="${esc(q)}" placeholder="Buscar por concepto, código de obra, categoría o comprobante…">${selOf('mv_t','Tipo',OPT.mtipo)}${selOf('mv_e','Estado',OPT.mstate)}${perSel('mv')}${ioBtns('movimientos')}</div>
-  <div class="card"><h2>Movimientos en ${cur} (${rows.length})</h2><table><tr><th>Fecha</th><th>Concepto</th><th>Proyecto</th><th>Estado</th><th style="text-align:right">Importe</th><th></th></tr>${rows.map(m=>`<tr class="cl" data-a="edit" data-c="movimientos" data-id="${m.id}"><td>${fd(m.fecha)}</td><td><b>${esc(m.concepto)}</b><br><small class="mut">${esc(m.categoria||'')} · ${esc(m.comprobante||'')}</small></td><td>${esc(nm('proyectos',m.proyectoId))}</td><td>${pill(m.estado)}</td><td style="text-align:right"><b class="${m.tipo==='Gasto'?'bad-t':'ok-t'}">${m.tipo==='Gasto'?'−':'+'}${money(m.importe,m.moneda)}</b></td><td>${m.tipo==='Ingreso'&&m.estado!=='Finalizado'?`<button class="btn s" data-a="cobrar" data-id="${m.id}">Marcar cobrado</button>`:''}</td></tr>`).join('')||'<tr><td class="mut">Sin movimientos.</td></tr>'}</table></div>`;
+  <div class="card"><h2>Movimientos en ${cur} (${rows.length})</h2><table><tr><th>Fecha</th><th>Concepto</th><th>Proyecto</th><th>Estado</th><th style="text-align:right">Importe</th><th></th></tr>${rows.map(m=>`<tr class="cl" data-a="edit" data-c="movimientos" data-id="${m.id}"><td>${fd(m.fecha)}</td><td><b>${esc(m.concepto)}</b><br><small class="mut">${esc(m.categoria||'')} · ${esc(m.comprobante||'')}${m.link?` · <a data-a="nop" href="${esc(m.link)}" target="_blank" rel="noopener">comprobante ↗</a>`:''}</small></td><td>${esc(nm('proyectos',m.proyectoId))}</td><td>${pill(m.estado)}</td><td style="text-align:right"><b class="${m.tipo==='Gasto'?'bad-t':'ok-t'}">${m.tipo==='Gasto'?'−':'+'}${money(m.importe,m.moneda)}</b></td><td>${m.tipo==='Ingreso'&&m.estado!=='Finalizado'?`<button class="btn s" data-a="cobrar" data-id="${m.id}">Marcar cobrado</button>`:''}</td></tr>`).join('')||'<tr><td class="mut">Sin movimientos.</td></tr>'}</table></div>`;
 }
 function vEquipo(){
   const rows=live('equipo');
@@ -705,7 +755,7 @@ async function syncNow(manual){
   if(!navigator.onLine){setSynMsg('Sin conexión · pendiente');return}
   SYN.busy=true;setSynMsg('Sincronizando…');
   try{
-    const N=W.nuvo,{ch,sent}=collectChanges(N);
+    const N=ensureD(W.nuvo),{ch,sent}=collectChanges(N);
     const arqUp=W.arq&&(W.arq.savedAt||0)>(SYN.st.arqUp||0)?W.arq.savedAt:0;
     const tsUp=W.ts&&(W.ts.savedAt||0)>(SYN.st.tsUp||0)?W.ts.savedAt:0;
     const body={token:c.token,since:SYN.st.since,changes:ch,cols:syncCols(),arq:arqUp?{upd:arqUp,data:JSON.stringify(W.arq)}:null,arqSince:Math.max(SYN.st.arqUp||0,arqUp),ts:tsUp?{upd:tsUp,data:JSON.stringify(W.ts)}:null,tsSince:Math.max(SYN.st.tsUp||0,tsUp)};
@@ -918,7 +968,7 @@ const A={
  rem:()=>{D.reminders=!D.reminders;persist();render()},
  notif:()=>{const n=notifs();modal(`<h2>Notificaciones</h2>${n.map(x=>`<div class="row" style="padding:9px 0;border-bottom:1px solid var(--line)"><span>${esc(x.txt)}<br><small class="mut">${esc(x.sub)}</small></span><button class="btn s" data-a="notgo" data-v="${x.k}">Ver →</button></div>`).join('')||'<p class="mut">No hay notificaciones pendientes.</p>'}<div class="acts"><button class="btn" data-a="close">Cerrar</button></div>`)},
  notgo:e=>{closeModal();go(e.v)},
- help:()=>modal(`<h2>Instructivo</h2><div class="sm"><p><b>1 · Navegá por tu estudio.</b> El menú lateral abre cada módulo: Clientes, Proyectos, Tareas, Visitas y Agenda, Proveedores, Compras, Documentos, Finanzas y Equipo. La búsqueda de arriba encuentra clientes, proyectos y tareas.</p><p><b>2 · Portada, altas rápidas y KPIs.</b> En el Dashboard personalizás portada y logo (“Personalizar”), creás un proyecto o tarea en un clic y tocás cualquiera de las 4 tarjetas para saltar al módulo.</p><p><b>3 · Todo conectado.</b> Un proyecto reúne sus tareas, visitas, documentos, compras y finanzas. Cambiá la etapa tocándola, mencioná al equipo con @Nombre y generá el reporte para el cliente.</p><p><b>Datos.</b> Todo lo que cargues se guarda automáticamente. Lo borrado va a la Papelera. En Configuración: listas, monedas, colores, copia de seguridad.</p></div><div class="acts"><button class="btn p" data-a="close">Entendido</button></div>`),
+ help:()=>modal(`<h2>Instructivo</h2><div class="sm"><p><b>1 · Navegá por tu estudio.</b> El menú lateral abre cada módulo: Clientes, Proyectos, Tareas, Visitas y Agenda, Proveedores, Compras, Documentos, Finanzas y Equipo. La búsqueda de arriba encuentra clientes, proyectos y tareas.</p><p><b>2 · Portada, altas rápidas y KPIs.</b> En el Dashboard personalizás portada y logo (“Personalizar”), creás un proyecto o tarea en un clic y tocás cualquiera de las 4 tarjetas para saltar al módulo.</p><p><b>3 · Todo conectado.</b> Un proyecto reúne sus tareas, visitas, documentos, compras y finanzas. Cambiá la etapa tocándola, mencioná al equipo con @Nombre y generá el reporte para el cliente.</p><p><b>Vista, voz y carga rápida.</b> “Vista” alterna entre la clásica y la nueva (tarjetas y barra inferior). El micrófono de la búsqueda acepta pedidos como “tareas de hoy de La Botera” o “cargar pago de 500 mil a La Botera”. El botón + carga un cobro o gasto en segundos. En cada obra, Finanzas muestra el estado de cuenta y genera el PDF para el cliente.</p><p><b>Datos.</b> Todo lo que cargues se guarda automáticamente. Lo borrado va a la Papelera. En Configuración: listas, monedas, colores, copia de seguridad.</p></div><div class="acts"><button class="btn p" data-a="close">Entendido</button></div>`),
  settings:openSettings,savesettings:saveSettings,
  accent:e=>{S().acento=e.v;persist();applyTheme();document.querySelectorAll('.sw button').forEach(b=>b.style.outline=b.dataset.v===e.v?'3px solid var(--ink)':'')},
  close:closeModal,
@@ -977,6 +1027,233 @@ const A={
  dowipe:()=>{['clientes','proyectos','tareas','visitas','proveedores','compras','documentos','movimientos'].forEach(c=>D[c]=D[c].filter(x=>!x.ej));D.notas='';persist();closeModal();toast('Datos vaciados');render()}
 };
 function pickImage(max,cb){const i=document.createElement('input');i.type='file';i.accept='image/*';i.onchange=async()=>{if(i.files[0]){const d=await fileToData(i.files[0],max);if(d)cb(d)}};i.click()}
+/*EXTRAS*/
+const IMG_NUVO="data:image/png;base64,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";
+const IMG_DP="data:image/png;base64,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";
+/* ============ Mejoras: vistas, DP, caja rápida, presupuestos, voz y estado de cuenta ============ */
+SCH.movimientos.f.push(['link','Enlace al comprobante (Drive)','text',0,1]);
+SCH.presupuestos={t:'presupuesto',f:[['concepto','Concepto','text',1,1],['proyectoId','Proyecto / obra','ref','proyectos'],['clase','Tipo','sel',['Presupuesto original','Adicional']],['fecha','Fecha','date'],['importe','Importe','num'],['moneda','Moneda','mon'],['estado','Estado','sel',['Aprobado','Pendiente']]]};
+DEF.presupuestos=()=>({clase:'Presupuesto original',estado:'Aprobado',fecha:today(),moneda:S().principal});
+SYNC_C.push('presupuestos');
+function ensureD(x){if(x&&!x.presupuestos)x.presupuestos=[];return x}
+
+/* --- Vista: nueva (barra inferior + tarjetas) o clásica --- */
+const VM=()=>{try{const v=localStorage.getItem('ui_vista');if(v==='nueva'||v==='clasica')return v}catch(e){}return innerWidth<=700?'nueva':'clasica'};
+function paintShell(){document.body.classList.toggle('vn',VM()==='nueva');const b=$('#bbar');if(b)b.innerHTML=bbarHTML()}
+function bbarHTML(){
+  const it=[['dashboard','▦','Inicio'],['proyectos','◎','Obras'],['tareas','☑','Tareas'],['finanzas','$','Caja']];
+  return it.map(([k,i,l])=>`<button data-a="go" data-v="${k}" class="${U.view===k?'on':''}"><i>${i}</i>${l}</button>`).join('')+`<button data-a="more"><i>⋯</i>Más</button>`;
+}
+function mheadHTML(){
+  const n=AW==='nuvo'?'Nuvó':PRIV[AW].n;
+  return `<div class="mhead"><b>${esc(n)}</b><span class="wsm"><button data-a="ws" data-w="nuvo" class="${AW==='nuvo'?'on':''}">Nuvó</button><button data-a="ws" data-w="arq" class="${AW==='arq'?'on':''}">🔒 DP</button><button data-a="ws" data-w="ts" class="${AW==='ts'?'on':''}">🔒 TS</button></span></div>`;
+}
+function homeCards(){
+  if(VM()!=='nueva')return '';
+  const cur=mon(),ft=finTotals(cur),tk=live('tareas'),pend=tk.filter(t=>t.estado!=='Completada').length,atr=tk.filter(t=>taskState(t)==='Atrasada').length;
+  const hoy=live('visitas').filter(v=>v.estado==='Programada'&&v.fecha===today()).length;
+  const act=live('proyectos').filter(p=>p.estado!=='Finalizado').length;
+  const compras=live('compras').filter(c=>c.estado!=='Abonado'&&c.estado!=='En obra / Entregado').length;
+  const C=[['proyectos','◎','Obras',act+(act===1?' activa':' activas')],['tareas','☑','Tareas',pend+' pendientes'+(atr?' · '+atr+' atrasadas':'')],['agenda','▤','Visitas y agenda',hoy?hoy+' hoy':'sin visitas hoy'],['finanzas','$','Caja',money(ft.cob,cur)+' cobrado'],['compras','⛁','Compras',compras+' sin cerrar'],['clientes','☺','Clientes',live('clientes').length+' en total'],['documentos','▭','Documentos',live('documentos').length+' cargados'],['reporte','≡','Reporte de obras','estado general']];
+  const nuvo=AW==='nuvo';
+  const priv=nuvo?`<div class="spc"><span class="sm mut">Espacios privados</span><button class="btn" data-a="ws" data-w="arq">🔒 DP</button><button class="btn" data-a="ws" data-w="ts">🔒 TS</button></div>`:'';
+  return `<div class="hhead"><small>${nuvo?'App de gestión de obras':'Espacio privado'}</small><h1>${nuvo?'Nuvó':esc(PRIV[AW].n)}</h1><p class="sub">${nuvo?'Compartido entre Diego y Tomás. Cada socio tiene su espacio privado.':'Solo vos ves este espacio.'}</p></div>${priv}<div class="hcards">${C.map(([k,i,l,s])=>`<button class="hc" data-a="go" data-v="${k}"><i>${i}</i><b>${l}</b><small>${esc(s)}</small></button>`).join('')}</div>`;
+}
+function moreSheet(){
+  const sec=NAV.filter(n=>!['dashboard','proyectos','tareas','finanzas'].includes(n[0]));
+  const b=(t,attrs,label,ic)=>`<button class="mb" data-a="mx" data-t="${t}" ${attrs}><i>${ic}</i>${label}</button>`;
+  modal(`<h2>Más</h2><h3>Secciones</h3><div class="mgrid">${sec.map(([k,l,i])=>b('go',`data-v="${k}"`,l,i)).join('')}${b('go','data-v="papelera"','Papelera','🗑')}</div>
+  <h3 style="margin-top:14px">Espacios</h3><div class="mgrid">${b('ws','data-w="nuvo"','Nuvó','◆')}${b('ws','data-w="arq"','DP','🔒')}${b('ws','data-w="ts"','TS','🔒')}</div>
+  <h3 style="margin-top:14px">Ajustes rápidos</h3><div class="mgrid">${b('vista','','Vista: '+(VM()==='nueva'?'nueva':'clásica'),'▦')}${b('theme','',S().tema==='oscuro'?'Tema claro':'Tema oscuro','☾')}${b('rem','','Recordatorios: '+(D.reminders?'Sí':'No'),'⏰')}${b('notif','','Notificaciones','🔔')}${STANDALONE&&SYN.cfg.url?b('syncnow','','Sincronizar','☁'):''}${b('settings','','Configuración','⚙')}${b('help','','Instructivo','?')}${AW!=='nuvo'?b('lock','','Bloquear','🔒')+b('chpw','','Contraseña','🔑'):''}</div>
+  <div class="acts"><button class="btn" data-a="close">Cerrar</button></div>`);
+}
+
+/* --- Estado de cuenta por obra --- */
+const esAdic=m=>m.categoria==='Pago de adicional'||/adicional/i.test(m.concepto||'');
+const sumI=a=>a.reduce((s,x)=>s+(+x.importe||0),0);
+function cuenta(p){
+  const cur=p.moneda||S().principal;
+  const pr=live('presupuestos').filter(x=>x.proyectoId===p.id&&x.moneda===cur&&x.estado==='Aprobado');
+  const orig=sumI(pr.filter(x=>x.clase==='Presupuesto original')),adic=sumI(pr.filter(x=>x.clase==='Adicional'));
+  const base=orig>0?orig:(+p.honorarios||0);
+  const pagos=live('movimientos').filter(m=>m.proyectoId===p.id&&m.tipo==='Ingreso'&&m.estado==='Finalizado'&&m.moneda===cur).sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
+  const cobAd=sumI(pagos.filter(esAdic)),cobPr=sumI(pagos.filter(m=>!esAdic(m)));
+  return {cur,base,adic,total:base+adic,cob:cobAd+cobPr,cobPr,cobAd,saldo:base+adic-cobAd-cobPr,pagos,fromHon:orig<=0&&base>0,adics:pr.filter(x=>x.clase==='Adicional')};
+}
+function finCuentaHTML(p){
+  const c=cuenta(p),pr=live('presupuestos').filter(x=>x.proyectoId===p.id).sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
+  const k=(l,v,cls)=>`<div><label>${l}</label><b class="${cls||''}">${v}</b></div>`;
+  return `<div class="card" style="margin-bottom:14px"><div class="row"><h2>Estado de cuenta (${c.cur})</h2><span class="pill ${c.saldo>0?'warn':'ok'}">${c.saldo>0?'Saldo a cobrar':'Al día'}</span></div>
+  <div class="dl" style="grid-template-columns:1fr 1fr;margin-top:12px">${k('Presupuesto'+(c.fromHon?' (monto pactado)':''),money(c.base,c.cur))}${k('Adicionales aprobados',money(c.adic,c.cur))}${k('Total acordado',money(c.total,c.cur))}${k('Cobrado',money(c.cob,c.cur),'ok-t')}${k('Saldo por cobrar',money(c.saldo,c.cur),c.saldo>0?'warn-t':'ok-t')}${k('Avance de cobro',c.total?Math.round(c.cob/c.total*100)+'%':'—')}</div>
+  <div class="prog" style="margin-top:10px"><i style="width:${c.total?Math.max(0,Math.min(100,c.cob/c.total*100)):0}%"></i></div>
+  <div class="acts" style="justify-content:flex-start;margin-top:12px"><button class="btn p s" data-a="qcaja" data-p="${p.id}" data-t="Ingreso">+ Cobro</button><button class="btn s" data-a="qcaja" data-p="${p.id}" data-t="Gasto">+ Gasto</button><button class="btn s" data-a="presnew" data-p="${p.id}">+ Presupuesto o adicional</button><button class="btn g s" data-a="repcli" data-id="${p.id}">Estado de cuenta (PDF)</button></div>
+  ${pr.length?`<h3 style="margin:14px 0 6px">Presupuesto y adicionales</h3>${pr.map(x=>`<div class="row" style="padding:7px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="presupuestos" data-id="${x.id}"><span>${esc(x.concepto)}<br><small class="mut">${esc(x.clase)} · ${fd(x.fecha)}</small></span><span>${pill(x.estado==='Aprobado'?'Aprobado por cliente':'Pendiente')} <b>${money(x.importe,x.moneda)}</b></span></div>`).join('')}`:'<p class="sm mut" style="margin-top:12px">Todavía no hay presupuesto cargado: se toma el monto pactado de la obra. Sumá el presupuesto original y los adicionales con el botón de arriba.</p>'}</div>`;
+}
+
+/* --- Carga rápida de caja (botón +) --- */
+function openQuick(o){
+  o=o||{};
+  const pj=live('proyectos').slice().sort((a,b)=>(a.estado==='Finalizado')-(b.estado==='Finalizado'));
+  if(!pj.length){toast('Primero creá una obra');return}
+  let pid=o.proyectoId||((U.view==='proyectos'&&U.sel)||'');
+  try{if(!pid)pid=localStorage.getItem('qc_obra')||''}catch(e){}
+  if(!pj.some(p=>p.id===pid))pid=pj[0].id;
+  const tipo=o.tipo==='Gasto'?'Gasto':'Ingreso';
+  window.__qc={tipo,touched:!!o.concepto};
+  modal(`<h2>Cargar movimiento</h2>
+  <div class="row" style="gap:8px;margin-bottom:12px"><button class="btn qt ${tipo==='Ingreso'?'p':''}" data-a="qctipo" data-v="Ingreso" style="flex:1;padding:12px">Cobro de cliente</button><button class="btn qt ${tipo==='Gasto'?'p':''}" data-a="qctipo" data-v="Gasto" style="flex:1;padding:12px">Gasto</button></div>
+  <div class="f"><div class="full"><label>Obra</label><select id="qc_obra">${pj.map(p=>`<option value="${p.id}" ${p.id===pid?'selected':''}>${esc(p.nombre)}</option>`).join('')}</select></div>
+  <div><label>Importe</label><input id="qc_imp" type="number" inputmode="decimal" step="any" value="${o.importe||''}" style="font-size:20px"></div>
+  <div><label>Moneda</label><select id="qc_mon"></select></div>
+  <div class="full" id="qc_clw"><label>Aplica a</label><select id="qc_cl"><option ${o.clase!=='Adicional'?'selected':''}>Presupuesto</option><option ${o.clase==='Adicional'?'selected':''}>Adicional</option></select></div>
+  <div class="full"><label>Concepto</label><input id="qc_con" value="${esc(o.concepto||'')}"></div>
+  <div><label>Fecha</label><input id="qc_fec" type="date" value="${today()}"></div>
+  <div><label>Comprobante (nº de operación)</label><input id="qc_cmp"></div>
+  <div class="full"><label>Enlace al comprobante en Drive (opcional)</label><input id="qc_lnk"></div></div>
+  <div class="acts"><button class="btn" data-a="close">Cancelar</button><button class="btn p" data-a="qcsave">Guardar</button></div>`);
+  qcSync(true);
+  setTimeout(()=>{const i=$('#qc_imp');if(i)i.focus()},60);
+}
+function qcSync(resetMon){
+  const q=window.__qc;if(!q||!$('#qc_obra'))return;
+  const p=byId('proyectos',$('#qc_obra').value),mo=$('#qc_mon');
+  if(resetMon||!mo.options.length){const want=(p&&p.moneda)||S().principal;mo.innerHTML=S().monedas.map(m=>`<option ${m===want?'selected':''}>${m}</option>`).join('')}
+  const ing=q.tipo==='Ingreso';
+  $('#qc_clw').style.display=ing?'':'none';
+  if(!q.touched){
+    const n=p?live('movimientos').filter(m=>m.proyectoId===p.id&&m.tipo==='Ingreso').length+1:1;
+    $('#qc_con').value=ing?'Pago N°'+n+' — Pago a cuenta del '+($('#qc_cl').value==='Adicional'?'adicional':'presupuesto'):'Gasto de obra';
+  }
+}
+function qcSave(){
+  const q=window.__qc||{},pid=$('#qc_obra').value,p=byId('proyectos',pid),imp=+$('#qc_imp').value;
+  if(!p){toast('Elegí una obra');return}
+  if(!(imp>0)){toast('Cargá un importe mayor a cero');return}
+  const ing=q.tipo==='Ingreso',ad=$('#qc_cl').value==='Adicional';
+  const rec={id:uid(),concepto:$('#qc_con').value.trim()||(ing?'Pago a cuenta':'Gasto de obra'),tipo:q.tipo,fecha:$('#qc_fec').value||today(),proyectoId:pid,clienteId:ing?(p.clienteId||''):'',categoria:ing?(ad?'Pago de adicional':'Pago del cliente'):'Gasto de obra',comprobante:$('#qc_cmp').value.trim(),link:$('#qc_lnk').value.trim(),importe:imp,moneda:$('#qc_mon').value,estado:'Finalizado'};
+  D.movimientos.push(rec);
+  try{localStorage.setItem('qc_obra',pid)}catch(e){}
+  persist();closeModal();toast((ing?'Cobro':'Gasto')+' guardado ✔');render();
+}
+document.addEventListener('change',ev=>{const id=ev.target&&ev.target.id;if(id==='qc_obra'||id==='qc_cl')qcSync(id==='qc_obra')});
+document.addEventListener('input',ev=>{if(ev.target&&ev.target.id==='qc_con'&&window.__qc)window.__qc.touched=true});
+
+/* --- Estado de cuenta para el cliente (PDF por impresión) --- */
+function repCliHTML(p){
+  const c=cuenta(p),cli=nm('clientes',p.clienteId),s=S(),nuvo=AW==='nuvo',cur=c.cur;
+  const sec=t=>`<div style="background:#dce7ea;color:#1d1d1b;font-weight:bold;padding:7px 18px;margin-top:14px">${t}</div>`;
+  const row=(l,v,st)=>`<tr><td style="${st||''}">${l}</td><td style="text-align:right;font-weight:bold;${st||''}">${v}</td></tr>`;
+  const tot=(l,v)=>`<tr><td style="background:#002437;color:#fff;font-weight:bold">${l}</td><td style="background:#002437;color:#fff;font-weight:bold;text-align:right">${v}</td></tr>`;
+  const pct=c.total?Math.max(0,Math.min(100,c.cob/c.total*100)):0;
+  const pagos=c.pagos.map(m=>`<tr><td style="width:84px">${fd(m.fecha)}</td><td>${esc(m.concepto)}</td><td style="color:#5b5b5b">${esc(m.comprobante||'')}</td><td style="text-align:right;font-weight:bold">${money(m.importe,m.moneda)}</td></tr>`).join('');
+  const notas=[`Importes expresados en ${cur}. Se computan los pagos efectivamente recibidos a la fecha.`,`El saldo surge de restar los pagos recibidos al total acordado (presupuesto más adicionales aprobados).`];
+  if(c.fromHon)notas.push('El presupuesto corresponde al monto pactado de la obra.');
+  const contacto=nuvo?'WhatsApp 3546 436841 (Tomás) · 3584 114395 (Diego) · nuvo.constructores@gmail.com · @nuvo.constructores':esc((s.titular||'')+(s.matricula?' · '+s.matricula:''));
+  return `<div class="rdoc" id="repdoc" style="font-family:Arial,Helvetica,sans-serif;color:#1d1d1b;background:#fff;font-size:12px;line-height:1.45">
+  <div style="background:#002437;color:#fff;padding:14px 18px"><div style="font-size:13px;letter-spacing:.2em;font-weight:bold">${nuvo?'NUVÓ':esc((s.estudio||'').toUpperCase())}</div><div style="font-size:9px;letter-spacing:.14em">${nuvo?'GESTIÓN INTEGRAL DE OBRA':esc((s.subtitulo||'').toUpperCase())}</div><div style="font-size:16px;font-weight:bold;margin-top:9px">${esc(p.nombre)}${cli&&cli!=='—'?' — '+esc(cli):''}${p.ubicacion?' — '+esc(p.ubicacion):''}</div></div>
+  <div style="background:#227380;color:#fff;padding:7px 18px;font-weight:bold">Estado de cuenta · actualizado al ${fd(today())}</div>
+  ${sec('Resumen')}
+  <table style="margin:0">${row('Presupuesto'+(c.fromHon?'':' original'),money(c.base,cur))}${row('Adicionales aprobados',money(c.adic,cur))}${tot('Total acordado',money(c.total,cur))}${row('Pagos recibidos a cuenta del presupuesto',money(c.cobPr,cur))}${row('Pagos recibidos a cuenta de adicionales',money(c.cobAd,cur))}${tot('Total pagado',money(c.cob,cur))}${row('Saldo a cobrar',money(c.saldo,cur),'color:#a23c00;font-size:13px')}</table>
+  <div style="padding:8px 18px 0"><div style="height:10px;background:#dce7ea;border-radius:5px;overflow:hidden"><div style="height:10px;width:${pct}%;background:#227380"></div></div><div style="font-size:10px;color:#5b5b5b;margin-top:3px">${Math.round(pct)}% del total acordado ya fue abonado</div></div>
+  ${sec('Pagos recibidos ('+c.pagos.length+')')}
+  <table style="margin:0"><tr><th>Fecha</th><th>Concepto</th><th>Comprobante</th><th style="text-align:right">Importe</th></tr>${pagos||'<tr><td colspan="4" style="color:#5b5b5b">Todavía no hay pagos registrados.</td></tr>'}<tr><td colspan="3" style="background:#002437;color:#fff;font-weight:bold">Total</td><td style="background:#002437;color:#fff;font-weight:bold;text-align:right">${money(c.cob,cur)}</td></tr></table>
+  ${c.adics.length?sec('Adicionales aprobados')+`<table style="margin:0"><tr><th style="width:84px">Fecha</th><th>Concepto</th><th style="text-align:right">Importe</th></tr>${c.adics.map(x=>`<tr><td>${fd(x.fecha)}</td><td>${esc(x.concepto)}</td><td style="text-align:right;font-weight:bold">${money(x.importe,x.moneda)}</td></tr>`).join('')}</table>`:''}
+  <div style="padding:12px 18px 6px;color:#5b5b5b;font-style:italic;font-size:9px">${notas.map(n=>'• '+n).join('<br>')}</div>
+  <div style="border-top:2px solid #227380;margin:8px 18px 0;padding:10px 0 14px"><div style="font-weight:bold;color:#002437;font-size:13px">${nuvo?'Tu vida. Nuestro proyecto.':esc(s.titular||'')}</div><div style="font-size:10px;color:#5b5b5b;margin-top:3px">${contacto}</div>${nuvo?'<div style="font-size:10px;color:#5b5b5b">Nuvó Constructores · Villa del Dique · Río Cuarto · Respaldo: INMOVILLE + Paladino Arquitectura</div>':''}</div></div>`;
+}
+window.addEventListener('afterprint',()=>document.body.classList.remove('prep'));
+
+/* --- Pedidos por voz (comandos simples) --- */
+const SRC=window.SpeechRecognition||window.webkitSpeechRecognition;let REC=null;
+const nz=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s.,]/g,' ').replace(/\s+/g,' ').trim();
+const STOPW=new Set(['para','con','que','por','una','uno','los','las','del','mis','tengo','hoy','abrime','mostrame','dame','haceme','hace','quiero','necesito','obra','cliente','proyecto','pagos','pago','cobros','cobro','tareas','tarea','pendientes','pendiente','reporte','estado','cuenta','cargar','registrar','gasto','gastos','pesos','dolares','semana','mes','esta','este','caja','movimientos','saldo','presupuesto','adicional','mil','millones','millon','informe','sobre','todas','todos','ver','las','como','esta']);
+function findProj(n){
+  const tk=n.split(' ').filter(t=>t.length>2&&!STOPW.has(t)&&!/^\d/.test(t));let best=null;
+  live('proyectos').forEach(p=>{const hay=nz(p.nombre+' '+p.codigo+' '+(p.ubicacion||'')+' '+nm('clientes',p.clienteId));const sc=tk.filter(t=>hay.includes(t)).length;if(sc>0&&(!best||sc>best.score))best={p,score:sc}});
+  return best;
+}
+function findCli(n){
+  const tk=n.split(' ').filter(t=>t.length>2&&!STOPW.has(t)&&!/^\d/.test(t));let best=null;
+  live('clientes').forEach(c=>{const hay=nz(c.nombre);const sc=tk.filter(t=>hay.includes(t)).length;if(sc>0&&(!best||sc>best.score))best={c,score:sc}});
+  return best&&best.c;
+}
+function parseMonto(n){
+  const m=/(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d+))?\s*(millones|millon|mil|k)?\b/.exec(n);
+  if(m){let v=parseFloat(m[1].replace(/\./g,'')+(m[2]?'.'+m[2]:''));const u=m[3];if(u==='mil'||u==='k')v*=1e3;else if(u)v*=1e6;return v}
+  if(/medio millon/.test(n))return 5e5;
+  if(/\bun millon\b/.test(n))return 1e6;
+  return 0;
+}
+function runCmd(txt){
+  const n=nz(txt),pr=findProj(n),has=r=>r.test(n);
+  U.q={};U.cur='';
+  if(has(/\b(cargar|cargame|registrar|registra|anotar|anota|asentar|agregar|agrega)\b/)&&has(/\b(pago|cobro|gasto|transferencia|deposito|sena)\b/)){
+    openQuick({tipo:has(/\bgasto\b/)?'Gasto':'Ingreso',importe:parseMonto(n)||'',proyectoId:pr?pr.p.id:'',clase:has(/adicional/)?'Adicional':'Presupuesto'});
+    return 'Revisá los datos y tocá Guardar';
+  }
+  if(has(/\b(reporte|informe|estado de cuenta)\b/)&&pr&&!has(/\binterno\b/)){A.repcli({id:pr.p.id});return 'Estado de cuenta de '+pr.p.nombre}
+  if(has(/\b(reporte|informe)\b/)&&!pr){go('reporte');return 'Reporte de obras'}
+  if(has(/\b(pago|pagos|cobro|cobros|cobrado|ingreso|ingresos|caja|gasto|gastos|movimiento|movimientos|saldo|presupuesto|adicional|adicionales)\b/)){
+    if(pr){go('proyectos',{tab:'fin'});U.sel=pr.p.id;render();return 'Caja de '+pr.p.nombre}
+    go('finanzas');return 'Finanzas';
+  }
+  if(has(/\b(tarea|tareas|pendiente|pendientes|vence|vencen|atrasada|atrasadas)\b/)){
+    const hoy=has(/\bhoy\b/),per=hoy?'custom':has(/\bsemana\b/)?'sem':has(/\bmes\b/)?'mes':'';
+    if(pr)U.q.tk_p=pr.p.id;
+    if(per){U.q.tk_per=per;if(hoy){U.q.tk_a='';U.q.tk_b=today()}}
+    go('tareas',{f:has(/atrasad/)?'Atrasada':'pend'});
+    return 'Tareas'+(pr?' de '+pr.p.nombre:'')+(hoy?' pendientes hasta hoy':per==='sem'?' de esta semana':per==='mes'?' de este mes':'');
+  }
+  if(has(/\b(visita|visitas|agenda|reunion|reuniones|calendario)\b/)){go('agenda');return 'Visitas y agenda'}
+  if(has(/\b(proveedor|proveedores)\b/)){go('proveedores');return 'Proveedores'}
+  if(has(/\b(compra|compras|pedido|pedidos)\b/)){go('compras');return 'Compras y pedidos'}
+  if(has(/\b(documento|documentos|plano|planos)\b/)){go('documentos');return 'Documentos'}
+  if(has(/\b(cliente|clientes)\b/)){const c=findCli(n);if(c){go('clientes');U.sel=c.id;render();return 'Cliente '+c.nombre}go('clientes');return 'Clientes'}
+  if(pr){go('proyectos');U.sel=pr.p.id;render();return pr.p.nombre}
+  const gs=$('#gs');if(gs){gs.value=txt;gs.dispatchEvent(new Event('input'));gs.focus()}
+  return 'No entendí el pedido; busqué “'+txt+'”';
+}
+function vozOpen(){
+  modal(`<h2>🎤 Pedí lo que necesitás</h2><p class="sm mut">Por ejemplo: “tareas pendientes de hoy de La Botera”, “pagos del cliente Sainz”, “estado de cuenta de La Botera” o “cargar pago de 500 mil a La Botera”.</p>
+  <div style="text-align:center;margin:14px 0"><button class="btn p" id="vz_btn" data-a="vozgo" style="font-size:18px;padding:14px 24px">🎤 Hablar</button></div>
+  <p id="vz_tx" class="sm" style="min-height:22px;text-align:center"></p>
+  <div class="f"><div class="full"><label>O escribilo acá</label><input id="vz_in" placeholder="tareas de hoy de La Botera"></div></div>
+  ${SRC?'':'<p class="sm mut">Este navegador no tiene dictado por voz. Escribí el pedido, o usá el micrófono del teclado del celular.</p>'}
+  <div class="acts"><button class="btn" data-a="close">Cerrar</button><button class="btn p" data-a="vozrun">Ejecutar</button></div>`);
+}
+function vozGo(){
+  if(!SRC){toast('Este navegador no tiene dictado. Escribí el pedido.');return}
+  try{if(REC)REC.stop()}catch(e){}
+  REC=new SRC();REC.lang='es-AR';REC.interimResults=true;REC.continuous=false;
+  const btn=$('#vz_btn');if(btn)btn.textContent='🎤 Escuchando…';
+  REC.onresult=e=>{let t='';for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;const x=$('#vz_tx');if(x)x.textContent='“'+t+'”';const inp=$('#vz_in');if(inp)inp.value=t;if(e.results[e.results.length-1].isFinal)vozRun(t)};
+  REC.onerror=e=>{const b=$('#vz_btn');if(b)b.textContent='🎤 Hablar';toast(e.error==='not-allowed'?'Permití el micrófono en el navegador':'No se pudo escuchar. Probá de nuevo o escribilo.')};
+  REC.onend=()=>{const b=$('#vz_btn');if(b)b.textContent='🎤 Hablar'};
+  REC.start();
+}
+function vozRun(t){
+  t=t||($('#vz_in')||{}).value||'';
+  if(!t.trim()){toast('Decí o escribí qué necesitás');return}
+  try{if(REC)REC.stop()}catch(e){}
+  closeModal();toast(runCmd(t));
+}
+document.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.target&&ev.target.id==='vz_in')vozRun()});
+
+/* --- Acciones nuevas --- */
+Object.assign(A,{
+  nop:()=>{},
+  more:moreSheet,
+  mx:e=>{closeModal();const f=A[e.t];if(f)f(e)},
+  vista:()=>{const n=VM()==='nueva'?'clasica':'nueva';try{localStorage.setItem('ui_vista',n)}catch(e){}render();toast('Vista '+(n==='nueva'?'nueva':'clásica'))},
+  qcaja:e=>openQuick({tipo:e.t,proyectoId:e.p}),
+  qctipo:e=>{if(!window.__qc)return;window.__qc.tipo=e.v;document.querySelectorAll('.qt').forEach(b=>b.classList.toggle('p',b.dataset.v===e.v));qcSync(false)},
+  qcsave:qcSave,
+  presnew:e=>openForm('presupuestos',null,{proyectoId:e.p}),
+  repcli:e=>{const p=byId('proyectos',e.id);if(!p)return;modal(`<h2>Estado de cuenta para el cliente</h2><p class="sm mut">Vista previa de una página. Tocá “Imprimir o guardar PDF” y elegí “Guardar como PDF”.</p>${repCliHTML(p)}<div class="acts"><button class="btn" data-a="close">Cerrar</button><button class="btn p" data-a="printrep">Imprimir o guardar PDF</button></div>`,1)},
+  printrep:()=>{document.body.classList.add('prep');setTimeout(()=>window.print(),60)},
+  voz:vozOpen,vozgo:vozGo,vozrun:()=>vozRun()
+});
+
 document.addEventListener('click',ev=>{
   const el=ev.target.closest('[data-a]');if(!el)return;const a=el.dataset.a;
   if(a==='q'||a==='pstate')return;
