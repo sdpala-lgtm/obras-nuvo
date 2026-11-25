@@ -305,7 +305,7 @@ function render(){
   <div class="foot"><button data-a="go" data-v="papelera" class="${U.view==='papelera'?'on':''}">🗑 <span class="t">Papelera</span></button><button data-a="settings">⚙ <span class="t">Configuración</span></button>
   <div class="me"><div class="av">${esc(initials(s.titular))}</div><div><b style="color:#fff">${esc(s.titular)}</b><br><span style="color:#8fa0b2">${esc(s.estudio)}</span></div></div></div></aside>
   <div class="main">${mheadHTML()}<div class="top"><div class="sbox"><input id="gs" placeholder="Buscar o pedir algo…" autocomplete="off"><button class="mic" data-a="voz" aria-label="Pedir por voz">🎤</button><div id="sr"></div></div>
-   ${AW!=='nuvo'?'<button class="tb" data-a="lock">🔒 Bloquear</button><button class="tb" data-a="chpw">🔑 Contraseña</button>':''}${presHTML()}${STANDALONE&&SYN.cfg.url?`<button class="tb" data-a="syncnow">☁ ${esc(SYN.msg||'Sincronizar')}</button>`:''}<button class="tb" data-a="vista">▦ Vista: ${VM()==='nueva'?'nueva':'clásica'}</button><button class="tb" data-a="theme">${s.tema==='oscuro'?'☀ Claro':'☾ Oscuro'}</button>
+   ${AW!=='nuvo'?'<button class="tb" data-a="lock">🔒 Bloquear</button><button class="tb" data-a="chpw">🔑 Contraseña</button>':''}${presHTML()}${STANDALONE&&SYN.cfg.url?`<button class="tb" data-a="syncnow">☁ ${esc(SYN.msg||'Sincronizar')}</button>`:''}<button class="tb" data-a="upd">⟳ Actualizar app</button><button class="tb" data-a="vista">▦ Vista: ${VM()==='nueva'?'nueva':'clásica'}</button><button class="tb" data-a="theme">${s.tema==='oscuro'?'☀ Claro':'☾ Oscuro'}</button>
    <button class="tb ${D.reminders?'on':''}" data-a="rem">⏰ Recordatorios: ${D.reminders?'Sí':'No'}</button>
    <button class="tb" data-a="notif">🔔 Notificaciones${n?`<span class="badge">${n}</span>`:''}</button>
    <button class="tb" data-a="help">? Instructivo</button></div>
@@ -1064,7 +1064,7 @@ function moreSheet(){
   const b=(t,attrs,label,ic)=>`<button class="mb" data-a="mx" data-t="${t}" ${attrs}><i>${ic}</i>${label}</button>`;
   modal(`<h2>Más</h2><h3>Secciones</h3><div class="mgrid">${sec.map(([k,l,i])=>b('go',`data-v="${k}"`,l,i)).join('')}${b('go','data-v="papelera"','Papelera','🗑')}</div>
   <h3 style="margin-top:14px">Espacios</h3><div class="mgrid">${b('ws','data-w="nuvo"','Nuvó','◆')}${b('ws','data-w="arq"','DP','🔒')}${b('ws','data-w="ts"','TS','🔒')}</div>
-  <h3 style="margin-top:14px">Ajustes rápidos</h3><div class="mgrid">${b('vista','','Vista: '+(VM()==='nueva'?'nueva':'clásica'),'▦')}${b('theme','',S().tema==='oscuro'?'Tema claro':'Tema oscuro','☾')}${b('rem','','Recordatorios: '+(D.reminders?'Sí':'No'),'⏰')}${b('notif','','Notificaciones','🔔')}${STANDALONE&&SYN.cfg.url?b('syncnow','','Sincronizar','☁'):''}${b('settings','','Configuración','⚙')}${b('help','','Instructivo','?')}${AW!=='nuvo'?b('lock','','Bloquear','🔒')+b('chpw','','Contraseña','🔑'):''}</div>
+  <h3 style="margin-top:14px">Ajustes rápidos</h3><div class="mgrid">${b('upd','','Actualizar app','⟳')}${b('vista','','Vista: '+(VM()==='nueva'?'nueva':'clásica'),'▦')}${b('theme','',S().tema==='oscuro'?'Tema claro':'Tema oscuro','☾')}${b('rem','','Recordatorios: '+(D.reminders?'Sí':'No'),'⏰')}${b('notif','','Notificaciones','🔔')}${STANDALONE&&SYN.cfg.url?b('syncnow','','Sincronizar','☁'):''}${b('settings','','Configuración','⚙')}${b('help','','Instructivo','?')}${AW!=='nuvo'?b('lock','','Bloquear','🔒')+b('chpw','','Contraseña','🔑'):''}</div>
   <div class="acts"><button class="btn" data-a="close">Cerrar</button></div>`);
 }
 
@@ -1242,6 +1242,7 @@ document.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.target&&ev.targ
 /* --- Acciones nuevas --- */
 Object.assign(A,{
   nop:()=>{},
+  upd:async()=>{toast('Actualizando…');try{if(STANDALONE&&SYN.cfg.url&&!SYN.busy){await flush();await syncNow()}}catch(e){}try{const rs=await navigator.serviceWorker.getRegistrations();for(const r of rs)await r.unregister();for(const k of await caches.keys())await caches.delete(k)}catch(e){}location.reload()},
   more:moreSheet,
   mx:e=>{closeModal();const f=A[e.t];if(f)f(e)},
   vista:()=>{const n=VM()==='nueva'?'clasica':'nueva';try{localStorage.setItem('ui_vista',n)}catch(e){}render();toast('Vista '+(n==='nueva'?'nueva':'clásica'))},
