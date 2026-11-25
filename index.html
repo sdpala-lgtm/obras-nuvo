@@ -469,23 +469,23 @@ function vProyecto(id){
 
 /* ============ Tareas ============ */
 function taskTable(rows,prefill){
-  return `<div class="card"><div class="row"><h2>Tareas (${rows.length})</h2><button class="btn p s" data-a="new" data-c="tareas" ${prefill?`data-pf='${JSON.stringify(prefill)}'`:''}>+ Nueva tarea</button></div><table style="margin-top:8px"><tr><th></th><th>Tarea</th><th>Proyecto</th><th>Responsable</th><th>Vence</th><th>Prioridad</th><th>Estado</th></tr>${rows.map(t=>{const st=taskState(t);return `<tr class="cl" data-a="edit" data-c="tareas" data-id="${t.id}"><td><button class="chk ${t.estado==='Completada'?'on':''}" data-a="done" data-id="${t.id}">${t.estado==='Completada'?'✓':''}</button></td><td><b>${esc(t.titulo)}</b></td><td>${esc(nm('proyectos',t.proyectoId))}</td><td>${esc(nm('equipo',t.responsableId))}</td><td class="${st==='Atrasada'?'bad-t':''}"><b>${fd(t.vence)}</b></td><td>${esc(t.prioridad)}</td><td>${pill(st)}</td></tr>`}).join('')||'<tr><td colspan="7" class="mut">Sin tareas.</td></tr>'}</table></div>`;
+  return `<div class="card"><div class="row"><h2>Tareas (${rows.length})</h2><button class="btn p s" data-a="new" data-c="tareas" ${prefill?`data-pf='${JSON.stringify(prefill)}'`:''}>+ Nueva tarea</button></div><table style="margin-top:8px"><tr><th></th><th>Tarea</th><th>Proyecto</th><th>Responsable</th><th>Vence</th><th>Prioridad</th><th>Estado</th></tr>${rows.map(t=>{const st=taskState(t);return `<tr class="cl" data-a="edit" data-c="tareas" data-id="${t.id}"><td><button class="chk ${t.estado==='Completada'?'on':''}" data-a="done" data-id="${t.id}">${t.estado==='Completada'?'✓':''}</button></td><td><b>${esc(t.titulo)}</b>${t.asignado?` <span class='pill'>${esc(t.asignado)}</span>`:''}</td><td>${esc(nm('proyectos',t.proyectoId))}</td><td>${esc(nm('equipo',t.responsableId))}</td><td class="${st==='Atrasada'?'bad-t':''}"><b>${fd(t.vence)}</b></td><td>${esc(t.prioridad)}</td><td>${pill(st)}</td></tr>`}).join('')||'<tr><td colspan="7" class="mut">Sin tareas.</td></tr>'}</table></div>`;
 }
 function vTareas(){
   const mode=U.sub.mode||'lista',f=U.sub.f||'pend';
   const all=live('tareas');
   const cnt={pend:all.filter(t=>t.estado!=='Completada').length,'Por realizar':all.filter(t=>taskState(t)==='Por realizar').length,'En curso':all.filter(t=>taskState(t)==='En curso').length,Atrasada:all.filter(t=>taskState(t)==='Atrasada').length,Completada:all.filter(t=>t.estado==='Completada').length};
   let rows=all.filter(t=>f==='pend'?t.estado!=='Completada':taskState(t)===f);
-  const q=qv('tk'),pr=qv('tk_p'),rs=qv('tk_r');
-  rows=rows.filter(t=>(match(t,q,['titulo','notas'])||nm('proyectos',t.proyectoId).toLowerCase().includes(q.toLowerCase()))&&(!pr||t.proyectoId===pr)&&(!rs||t.responsableId===rs)&&periodOK(t.vence,'tk')).sort((a,b)=>(a.vence||'z').localeCompare(b.vence||'z'));
+  const q=qv('tk'),pr=qv('tk_p'),rs=qv('tk_r'),qw=qv('tk_w');
+  rows=rows.filter(t=>(match(t,q,['titulo','notas'])||nm('proyectos',t.proyectoId).toLowerCase().includes(q.toLowerCase()))&&(!pr||t.proyectoId===pr)&&(!rs||t.responsableId===rs)&&whoOK(t,qw)&&periodOK(t.vence,'tk')).sort((a,b)=>(a.vence||'z').localeCompare(b.vence||'z'));
   let body;
-  if(mode==='kanban')body=`<div class="kan">${OPT.tstate.concat(['Atrasada']).map(st=>{const l=all.filter(t=>taskState(t)===st);return `<div class="col"><h3><span>${st}</span><span class="pill">${l.length}</span></h3>${l.map(t=>`<div class="kc" data-a="edit" data-c="tareas" data-id="${t.id}"><div class="b"><p><b>${esc(t.titulo)}</b></p><p class="sm mut">${esc(nm('proyectos',t.proyectoId))}</p><div class="row sm"><span>${esc(nm('equipo',t.responsableId))}</span><span class="${st==='Atrasada'?'bad-t':'mut'}">${fd(t.vence)}</span></div></div><div class="nv"><button class="btn s" data-a="tmove" data-id="${t.id}" data-d="-1">‹</button>${pill(t.prioridad)}<button class="btn s" data-a="tmove" data-id="${t.id}" data-d="1">›</button></div></div>`).join('')}</div>`}).join('')}</div>`;
+  if(mode==='kanban')body=`<div class="kan">${OPT.tstate.concat(['Atrasada']).map(st=>{const l=all.filter(t=>taskState(t)===st);return `<div class="col"><h3><span>${st}</span><span class="pill">${l.length}</span></h3>${l.map(t=>`<div class="kc" data-a="edit" data-c="tareas" data-id="${t.id}"><div class="b"><p><b>${esc(t.titulo)}</b>${t.asignado?` <span class='pill'>${esc(t.asignado)}</span>`:''}</p><p class="sm mut">${esc(nm('proyectos',t.proyectoId))}</p><div class="row sm"><span>${esc(nm('equipo',t.responsableId))}</span><span class="${st==='Atrasada'?'bad-t':'mut'}">${fd(t.vence)}</span></div></div><div class="nv"><button class="btn s" data-a="tmove" data-id="${t.id}" data-d="-1">‹</button>${pill(t.prioridad)}<button class="btn s" data-a="tmove" data-id="${t.id}" data-d="1">›</button></div></div>`).join('')}</div>`}).join('')}</div>`;
   else if(mode==='crono')body=`<div class="card"><h2>Cronograma de vencimientos</h2>${all.filter(t=>t.vence).sort((a,b)=>a.vence.localeCompare(b.vence)).map(t=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="tareas" data-id="${t.id}"><span style="width:90px"><b>${fd(t.vence)}</b></span><span style="flex:1">${esc(t.titulo)}<br><small class="mut">${esc(nm('proyectos',t.proyectoId))}</small></span>${pill(taskState(t))}</div>`).join('')}</div>`;
   else body=taskTable(rows);
   return head('Tareas y Entregables','Planos, cómputos, pedidos de cotización y controles técnicos organizados por estado y fecha',`<button class="btn p" data-a="new" data-c="tareas">+ Nueva tarea</button>`)+
   `<div class="row" style="margin-bottom:12px;flex-wrap:wrap"><div class="tabs" style="margin:0">${[['lista','☰ Lista'],['kanban','▥ Tablero Kanban'],['crono','▤ Cronograma']].map(([k,l])=>`<button class="tab ${mode===k?'on':''}" data-a="mode" data-v="${k}">${l}</button>`).join('')}</div><div class="row" style="gap:8px">${ioBtns('tareas')}</div></div>
   ${mode==='lista'?`<div class="tabs">${[['pend','Pendientes'],['Por realizar','Por realizar'],['En curso','En curso'],['Atrasada','Atrasadas'],['Completada','Completadas']].map(([k,l])=>`<button class="tab ${f===k?'on':''}" data-a="tfilter" data-v="${k}">${l} <span class="pill">${cnt[k]}</span></button>`).join('')}</div>
-  <div class="tools"><input data-a="q" data-k="tk" value="${esc(q)}" placeholder="Buscar tarea por título, código de obra, responsable o nota…">${selOf('tk_p','Proyecto / Obra',live('proyectos').map(p=>[p.id,p.codigo+' · '+p.nombre]))}${selOf('tk_r','Responsable',live('equipo').map(x=>[x.id,x.nombre]))}${perSel('tk')}</div>`:''}${body}`;
+  <div class="tools"><input data-a="q" data-k="tk" value="${esc(q)}" placeholder="Buscar tarea por título, código de obra, responsable o nota…">${selOf('tk_p','Proyecto / Obra',live('proyectos').map(p=>[p.id,p.codigo+' · '+p.nombre]))}${selOf('tk_r','Responsable',live('equipo').map(x=>[x.id,x.nombre]))}${selOf('tk_w','Quién (DP/TS)',WHO)}${perSel('tk')}</div>`:''}${body}`;
 }
 
 /* ============ Agenda ============ */
@@ -1035,6 +1035,9 @@ SCH.movimientos.f.push(['link','Enlace al comprobante (Drive)','text',0,1]);
 SCH.presupuestos={t:'presupuesto',f:[['concepto','Concepto','text',1,1],['proyectoId','Proyecto / obra','ref','proyectos'],['clase','Tipo','sel',['Presupuesto original','Adicional']],['fecha','Fecha','date'],['importe','Importe','num'],['moneda','Moneda','mon'],['estado','Estado','sel',['Aprobado','Pendiente']]]};
 DEF.presupuestos=()=>({clase:'Presupuesto original',estado:'Aprobado',fecha:today(),moneda:S().principal});
 SYNC_C.push('presupuestos');
+SCH.tareas.f.splice(3,0,['asignado','Quién la realiza (DP / TS / ambos)','sel',['DP','TS','Ambos','Indistinto']]);
+const WHO=['DP','TS','Ambos','Indistinto'];
+const whoOK=(t,w)=>!w||t.asignado===w||((w==='DP'||w==='TS')&&(t.asignado==='Ambos'||t.asignado==='Indistinto'));
 function ensureD(x){if(x&&!x.presupuestos)x.presupuestos=[];return x}
 
 /* --- Vista: nueva (barra inferior + tarjetas) o clásica --- */
@@ -1200,6 +1203,7 @@ function runCmd(txt){
   if(has(/\b(tarea|tareas|pendiente|pendientes|vence|vencen|atrasada|atrasadas)\b/)){
     const hoy=has(/\bhoy\b/),per=hoy?'custom':has(/\bsemana\b/)?'sem':has(/\bmes\b/)?'mes':'';
     if(pr)U.q.tk_p=pr.p.id;
+    if(has(/\b(dp|diego)\b/))U.q.tk_w='DP';else if(has(/\b(ts|tomas)\b/))U.q.tk_w='TS';
     if(per){U.q.tk_per=per;if(hoy){U.q.tk_a='';U.q.tk_b=today()}}
     go('tareas',{f:has(/atrasad/)?'Atrasada':'pend'});
     return 'Tareas'+(pr?' de '+pr.p.nombre:'')+(hoy?' pendientes hasta hoy':per==='sem'?' de esta semana':per==='mes'?' de este mes':'');
