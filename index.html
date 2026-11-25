@@ -459,7 +459,7 @@ function vProyecto(id){
   if(tab==='visitas')body=`<div class="card"><div class="row"><h2>Visitas y bitácora (${vs.length})</h2><button class="btn p s" data-a="newvis" data-p="${id}">+ Agendar visita</button></div>${vs.map(v=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="visitas" data-id="${v.id}"><div><b>${esc(v.titulo)}</b><br><small class="mut">${fd(v.fecha)} · ${v.hora||''} hs ${esc(v.notas||'')}</small></div>${pill(v.estado)}</div>`).join('')||'<p class="mut">Sin visitas.</p>'}</div>`;
   if(tab==='docs')body=`<div class="card"><div class="row"><h2>Documentación y entregas (${dc.length})</h2><button class="btn p s" data-a="newin" data-c="documentos" data-p="${id}">+ Subir</button></div>${dc.map(d=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="documentos" data-id="${d.id}"><div><b>${esc(d.titulo)}</b><br><small class="mut">${esc(d.categoria||'')} · ${esc(d.rev||'')}</small></div>${pill(d.estado)}</div>`).join('')||'<p class="mut">Sin documentos.</p>'}</div>`;
   if(tab==='compras')body=`<div class="card"><div class="row"><h2>Compras (${cp.length})</h2><button class="btn p s" data-a="newin" data-c="compras" data-p="${id}">+ Nueva compra</button></div>${cp.map(c=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="compras" data-id="${c.id}"><div><b>${esc(c.concepto)}</b><br><small class="mut">${esc(nm('proveedores',c.proveedorId))} · ${fd(c.fecha)}</small></div><div>${pill(c.estado)} <b>${money(c.importe,c.moneda)}</b></div></div>`).join('')||'<p class="mut">Sin compras.</p>'}</div>`;
-  if(tab==='fin')body=finCuentaHTML(p)+`<div class="card"><div class="row"><h2>Finanzas (${mv.length})</h2><button class="btn p s" data-a="newin" data-c="movimientos" data-p="${id}">+ Registrar movimiento</button></div>${mv.map(m=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="movimientos" data-id="${m.id}"><div><b>${esc(m.concepto)}</b><br><small class="mut">${fd(m.fecha)} · ${esc(m.comprobante||'')}${m.link?` · <a data-a="nop" href="${esc(m.link)}" target="_blank" rel="noopener">comprobante ↗</a>`:''}</small></div><div>${pill(m.estado)} <b class="${m.tipo==='Gasto'?'bad-t':'ok-t'}">${m.tipo==='Gasto'?'−':'+'}${money(m.importe,m.moneda)}</b></div></div>`).join('')||'<p class="mut">Sin movimientos.</p>'}</div>`;
+  if(tab==='fin')body=finCuentaHTML(p)+`<div class="card"><div class="row"><h2>Finanzas (${mv.length})</h2><button class="btn p s" data-a="newin" data-c="movimientos" data-p="${id}">+ Registrar movimiento</button></div>${mv.map(m=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer" data-a="edit" data-c="movimientos" data-id="${m.id}"><div><b>${esc(m.concepto)}</b><br><small class="mut">${fd(m.fecha)} · ${esc(m.comprobante||'')}${m.link?` · <a data-a="nop" href="${esc(m.link)}" target="_blank" rel="noopener">comprobante ↗</a>`:''}${m.adjuntoEstado==='Pendiente'?' · 📎 subiendo a Drive…':''}</small></div><div>${pill(m.estado)} <b class="${m.tipo==='Gasto'?'bad-t':'ok-t'}">${m.tipo==='Gasto'?'−':'+'}${money(m.importe,m.moneda)}</b></div></div>`).join('')||'<p class="mut">Sin movimientos.</p>'}</div>`;
   const tabs=[['resumen','Resumen general'],['tareas','Tareas ('+tk.length+')'],['visitas','Visitas y bitácora ('+vs.length+')'],['docs','Documentos ('+dc.length+')'],['compras','Compras ('+cp.length+')'],['fin','Finanzas ('+mv.length+')']];
   return `<div class="head"><button class="btn" data-a="back">← Volver a Proyectos</button><div class="row" style="gap:8px;flex-wrap:wrap"><select data-a="pstate" data-id="${id}">${OPT.pstate.map(o=>`<option ${p.estado===o?'selected':''}>${o}</option>`).join('')}</select><button class="btn" data-a="gproj" data-id="${id}">Cronograma</button><button class="btn g" data-a="report" data-id="${id}">Reporte para el cliente</button><button class="btn g" data-a="repcli" data-id="${id}">Estado de cuenta (PDF)</button><button class="btn" data-a="cover" data-id="${id}">Portada</button><button class="btn" data-a="edit" data-c="proyectos" data-id="${id}">Editar proyecto</button><button class="btn d" data-a="del" data-c="proyectos" data-id="${id}">Papelera</button></div></div>
   <div class="cover" style="${p.portada?`background-image:url(${p.portada})`:''}"><button class="btn" data-a="cover" data-id="${id}">Cambiar portada</button></div>
@@ -541,7 +541,7 @@ function vFin(){
   `<div class="grid g3" style="margin-bottom:14px"><div class="card"><small class="mut">Honorarios cobrados (${cur})</small><div class="kpi n ok-t" style="font-size:28px;font-weight:600">${money(ft.cob,cur)}</div></div><div class="card"><small class="mut">Facturado / pendiente (${cur})</small><div class="warn-t" style="font-size:28px;font-weight:600">${money(ft.pen,cur)}</div></div><div class="card"><small class="mut">Gastos y asesores (${cur})</small><div class="bad-t" style="font-size:28px;font-weight:600">${money(ft.gas,cur)}</div></div></div>
   <div class="card" style="margin-bottom:14px"><h3>Reparto del período (${cur})</h3><div class="split"><i style="width:${ft.cob/tot*100}%;background:var(--ok)"></i><i style="width:${ft.pen/tot*100}%;background:var(--ac)"></i><i style="width:${ft.gas/tot*100}%;background:var(--bad)"></i></div><small class="mut">● Cobrado ${Math.round(ft.cob/tot*100)}% · ● Pendiente ${Math.round(ft.pen/tot*100)}% · ● Gastos ${Math.round(ft.gas/tot*100)}%</small></div>
   <div class="tools"><input data-a="q" data-k="mv" value="${esc(q)}" placeholder="Buscar por concepto, código de obra, categoría o comprobante…">${selOf('mv_t','Tipo',OPT.mtipo)}${selOf('mv_e','Estado',OPT.mstate)}${perSel('mv')}${ioBtns('movimientos')}</div>
-  <div class="card"><h2>Movimientos en ${cur} (${rows.length})</h2><table><tr><th>Fecha</th><th>Concepto</th><th>Proyecto</th><th>Estado</th><th style="text-align:right">Importe</th><th></th></tr>${rows.map(m=>`<tr class="cl" data-a="edit" data-c="movimientos" data-id="${m.id}"><td>${fd(m.fecha)}</td><td><b>${esc(m.concepto)}</b><br><small class="mut">${esc(m.categoria||'')} · ${esc(m.comprobante||'')}${m.link?` · <a data-a="nop" href="${esc(m.link)}" target="_blank" rel="noopener">comprobante ↗</a>`:''}</small></td><td>${esc(nm('proyectos',m.proyectoId))}</td><td>${pill(m.estado)}</td><td style="text-align:right"><b class="${m.tipo==='Gasto'?'bad-t':'ok-t'}">${m.tipo==='Gasto'?'−':'+'}${money(m.importe,m.moneda)}</b></td><td>${m.tipo==='Ingreso'&&m.estado!=='Finalizado'?`<button class="btn s" data-a="cobrar" data-id="${m.id}">Marcar cobrado</button>`:''}</td></tr>`).join('')||'<tr><td class="mut">Sin movimientos.</td></tr>'}</table></div>`;
+  <div class="card"><h2>Movimientos en ${cur} (${rows.length})</h2><table><tr><th>Fecha</th><th>Concepto</th><th>Proyecto</th><th>Estado</th><th style="text-align:right">Importe</th><th></th></tr>${rows.map(m=>`<tr class="cl" data-a="edit" data-c="movimientos" data-id="${m.id}"><td>${fd(m.fecha)}</td><td><b>${esc(m.concepto)}</b><br><small class="mut">${esc(m.categoria||'')} · ${esc(m.comprobante||'')}${m.link?` · <a data-a="nop" href="${esc(m.link)}" target="_blank" rel="noopener">comprobante ↗</a>`:''}${m.adjuntoEstado==='Pendiente'?' · 📎 subiendo a Drive…':''}</small></td><td>${esc(nm('proyectos',m.proyectoId))}</td><td>${pill(m.estado)}</td><td style="text-align:right"><b class="${m.tipo==='Gasto'?'bad-t':'ok-t'}">${m.tipo==='Gasto'?'−':'+'}${money(m.importe,m.moneda)}</b></td><td>${m.tipo==='Ingreso'&&m.estado!=='Finalizado'?`<button class="btn s" data-a="cobrar" data-id="${m.id}">Marcar cobrado</button>`:''}</td></tr>`).join('')||'<tr><td class="mut">Sin movimientos.</td></tr>'}</table></div>`;
 }
 function vEquipo(){
   const rows=live('equipo');
@@ -1102,7 +1102,7 @@ function openQuick(o){
   try{if(!pid)pid=localStorage.getItem('qc_obra')||''}catch(e){}
   if(!pj.some(p=>p.id===pid))pid=pj[0].id;
   const tipo=o.tipo==='Gasto'?'Gasto':'Ingreso';
-  window.__qc={tipo,touched:!!o.concepto};
+  window.__qc={tipo,touched:!!o.concepto,file:null};
   modal(`<h2>Cargar movimiento</h2>
   <div class="row" style="gap:8px;margin-bottom:12px"><button class="btn qt ${tipo==='Ingreso'?'p':''}" data-a="qctipo" data-v="Ingreso" style="flex:1;padding:12px">Cobro de cliente</button><button class="btn qt ${tipo==='Gasto'?'p':''}" data-a="qctipo" data-v="Gasto" style="flex:1;padding:12px">Gasto</button></div>
   <div class="f"><div class="full"><label>Obra</label><select id="qc_obra">${pj.map(p=>`<option value="${p.id}" ${p.id===pid?'selected':''}>${esc(p.nombre)}</option>`).join('')}</select></div>
@@ -1112,7 +1112,8 @@ function openQuick(o){
   <div class="full"><label>Concepto</label><input id="qc_con" value="${esc(o.concepto||'')}"></div>
   <div><label>Fecha</label><input id="qc_fec" type="date" value="${today()}"></div>
   <div><label>Comprobante (nº de operación)</label><input id="qc_cmp"></div>
-  <div class="full"><label>Enlace al comprobante en Drive (opcional)</label><input id="qc_lnk"></div></div>
+  <div class="full"><label>Comprobante (imagen o PDF)</label><div id="qc_zone" tabindex="0" style="border:2px dashed var(--line);border-radius:12px;padding:14px;text-align:center;font-size:13px">Pegá acá la captura o foto (Ctrl+V en la compu, o mantené apretado en el celu), arrastrala, o<br><label class="btn s" style="margin-top:8px;display:inline-block">Elegir archivo o sacar foto<input id="qc_file" type="file" accept="image/*,application/pdf" hidden></label></div><div id="qc_prev"></div><div id="qc_ocr" class="sm mut" style="margin-top:6px"></div></div>
+  <div class="full"><label>O pegá el enlace de Drive (opcional)</label><input id="qc_lnk"></div></div>
   <div class="acts"><button class="btn" data-a="close">Cancelar</button><button class="btn p" data-a="qcsave">Guardar</button></div>`);
   qcSync(true);
   setTimeout(()=>{const i=$('#qc_imp');if(i)i.focus()},60);
@@ -1135,6 +1136,7 @@ function qcSave(){
   const ing=q.tipo==='Ingreso',ad=$('#qc_cl').value==='Adicional';
   const rec={id:uid(),concepto:$('#qc_con').value.trim()||(ing?'Pago a cuenta':'Gasto de obra'),tipo:q.tipo,fecha:$('#qc_fec').value||today(),proyectoId:pid,clienteId:ing?(p.clienteId||''):'',categoria:ing?(ad?'Pago de adicional':'Pago del cliente'):'Gasto de obra',comprobante:$('#qc_cmp').value.trim(),link:$('#qc_lnk').value.trim(),importe:imp,moneda:$('#qc_mon').value,estado:'Finalizado'};
   D.movimientos.push(rec);
+  qcQueue(rec,p);
   try{localStorage.setItem('qc_obra',pid)}catch(e){}
   persist();closeModal();toast((ing?'Cobro':'Gasto')+' guardado ✔');render();
 }
@@ -1258,6 +1260,111 @@ Object.assign(A,{
   printrep:()=>{document.body.classList.add('prep');setTimeout(()=>window.print(),60)},
   voz:vozOpen,vozgo:vozGo,vozrun:()=>vozRun()
 });
+
+/* ============ Comprobante pegado / foto: guardado en Drive + lectura (OCR) ============ */
+const IDBN='nuvo_comprobantes';
+function idb(){return new Promise((ok,ko)=>{const r=indexedDB.open(IDBN,1);r.onupgradeneeded=()=>r.result.createObjectStore('j',{keyPath:'id'});r.onsuccess=()=>ok(r.result);r.onerror=()=>ko(r.error)})}
+async function idbDo(mode,fn){const db=await idb();return new Promise((ok,ko)=>{const t=db.transaction('j',mode),s=t.objectStore('j'),q=fn(s);t.oncomplete=()=>ok(q&&q.result);t.onerror=()=>ko(t.error)})}
+const jobPut=j=>idbDo('readwrite',s=>s.put(j)),jobDel=id=>idbDo('readwrite',s=>s.delete(id)),jobAll=()=>idbDo('readonly',s=>s.getAll());
+
+/* reduce la imagen (máx. 1600 px, JPEG) para que pese poco */
+async function shrink(file){
+  if(!/^image\//.test(file.type))return file;
+  try{
+    const bmp=await createImageBitmap(file),k=Math.min(1,1600/Math.max(bmp.width,bmp.height));
+    const c=document.createElement('canvas');c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);
+    const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bmp,0,0,c.width,c.height);
+    return await new Promise(r=>c.toBlob(b=>r(b||file),'image/jpeg',.82));
+  }catch(e){return file}
+}
+const toB64=b=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=ko;r.readAsDataURL(b)});
+
+/* lectura del texto de un comprobante de transferencia */
+function ocrParse(t){
+  const o={};const s=String(t||'').replace(/\r/g,'');
+  const num=x=>{x=x.replace(/\s/g,'');const m=/^(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d{1,2}))?$/.exec(x);return m?parseFloat(m[1].replace(/\./g,'')+(m[2]?'.'+m[2]:'')):0};
+  const cand=[];const re=/(US\$|U\$S|USD|\$)\s*([\d.,]+\d)/gi;let m;
+  while((m=re.exec(s))){const v=num(m[2]);if(v>0)cand.push({v,usd:/^(US|U\$S|USD)/i.test(m[1]),i:m.index})}
+  if(cand.length){
+    const key=/(importe|monto|transferiste|enviaste|pagaste|total)/i;
+    const pick=cand.find(c=>key.test(s.slice(Math.max(0,c.i-40),c.i+2)))||cand.slice().sort((a,b)=>b.v-a.v)[0];
+    o.importe=pick.v;if(pick.usd)o.moneda='USD';
+  }
+  const M={enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12,ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,sep:9,set:9,oct:10,nov:11,dic:12};
+  const p2=n=>String(n).padStart(2,'0');
+  let d=/\b(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4}|\d{2})\b/.exec(s);
+  if(d){let y=+d[3];if(y<100)y+=2000;if(+d[2]>=1&&+d[2]<=12&&+d[1]>=1&&+d[1]<=31)o.fecha=y+'-'+p2(d[2])+'-'+p2(d[1])}
+  else{d=/\b(\d{1,2})\s+(?:de\s+)?([a-záéíóú]{3,10})\.?\s+(?:de\s+)?(\d{4})\b/i.exec(s);
+    if(d){const mm=M[d[2].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')];if(mm)o.fecha=d[3]+'-'+p2(mm)+'-'+p2(d[1])}}
+  const rop=/(?:operaci[oó]n|comprobante|c[oó]digo|referencia|transacci[oó]n)[\s:#.\-nº°]{0,8}([A-Za-z0-9]{6,})/gi;let om;
+  while((om=rop.exec(s))){if(/\d/.test(om[1])){o.comprobante=om[1];break}}
+  return o;
+}
+function loadTess(){return new Promise((ok,ko)=>{if(window.Tesseract)return ok();const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';sc.onload=ok;sc.onerror=()=>ko(new Error('sin conexión'));document.head.appendChild(sc)})}
+async function qcOcr(blob){
+  const st=$('#qc_ocr');if(!st||!/^image\//.test(blob.type))return;
+  if(!navigator.onLine){st.textContent='Sin conexión: cargá los datos a mano.';return}
+  try{
+    st.textContent='Leyendo el comprobante…';await loadTess();
+    const r=await Tesseract.recognize(blob,'spa',{logger:m=>{const s=$('#qc_ocr');if(s&&m.status==='recognizing text')s.textContent='Leyendo el comprobante… '+Math.round(m.progress*100)+'%'}});
+    if(!$('#qc_ocr'))return;const o=ocrParse(r.data.text),got=[];
+    const imp=$('#qc_imp');if(o.importe&&imp&&!imp.value){imp.value=o.importe;got.push('importe')}
+    if(o.moneda){const mo=$('#qc_mon');if(mo&&[...mo.options].some(x=>x.value===o.moneda)){mo.value=o.moneda}}
+    const f=$('#qc_fec');if(o.fecha&&f){f.value=o.fecha;got.push('fecha')}
+    const c=$('#qc_cmp');if(o.comprobante&&c&&!c.value){c.value=o.comprobante;got.push('n° de operación')}
+    st.textContent=got.length?'Leído: '+got.join(', ')+'. Revisá los datos antes de guardar.':'No pude leer datos claros. Cargalos a mano.';
+  }catch(e){const s=$('#qc_ocr');if(s)s.textContent='No se pudo leer la imagen. Cargá los datos a mano.'}
+}
+async function qcAttach(file){
+  if(!file||!window.__qc)return;
+  if(!/^image\//.test(file.type)&&file.type!=='application/pdf'){toast('Pegá una imagen o un PDF');return}
+  if(file.size>15e6){toast('El archivo es muy pesado (máx. 15 MB)');return}
+  const blob=await shrink(file);window.__qc.file={blob,mime:blob.type||file.type,orig:file.name||''};
+  const pv=$('#qc_prev');if(pv){pv.innerHTML=/^image\//.test(blob.type)?`<img src="${URL.createObjectURL(blob)}" alt="" style="max-width:100%;max-height:190px;border-radius:8px;border:1px solid var(--line);margin-top:8px"> <button class="btn s" data-a="qcrm">Quitar</button>`:`<p class="sm">📎 ${esc(file.name||'documento.pdf')} <button class="btn s" data-a="qcrm">Quitar</button></p>`}
+  qcOcr(blob);
+}
+document.addEventListener('paste',ev=>{
+  if(!$('#qc_zone')||!ev.clipboardData)return;
+  const it=[...ev.clipboardData.items].find(i=>i.kind==='file'&&(/^image\//.test(i.type)||i.type==='application/pdf'));
+  if(it){ev.preventDefault();qcAttach(it.getAsFile())}
+});
+document.addEventListener('change',ev=>{if(ev.target&&ev.target.id==='qc_file'&&ev.target.files[0]){qcAttach(ev.target.files[0]);ev.target.value=''}});
+document.addEventListener('dragover',ev=>{if($('#qc_zone'))ev.preventDefault()});
+document.addEventListener('drop',ev=>{if($('#qc_zone')&&ev.dataTransfer&&ev.dataTransfer.files[0]){ev.preventDefault();qcAttach(ev.dataTransfer.files[0])}});
+
+/* subida a Drive mediante el script de sincronización */
+async function qcUpload(job){
+  const c=SYN.cfg;if(!c||!c.url||!c.token||!navigator.onLine)return false;
+  try{
+    const data=await toB64(job.blob);
+    const r=await fetch(c.url,{method:'POST',body:JSON.stringify({token:c.token,upload:{obra:job.obra,name:job.name,mime:job.mime,data}}),redirect:'follow'});
+    const res=await r.json();
+    if(!res||!res.ok||!res.url)return false;
+    const w=W[job.ws];const m=w&&w.movimientos&&w.movimientos.find(x=>x.id===job.movId);
+    if(m){m.link=res.url;m.adjuntoEstado='Subido';m.upd=Date.now()}
+    if(w){w.savedAt=Date.now();if(w===D)persist();else{}}
+    await jobDel(job.id);if(w===D)render();return true;
+  }catch(e){return false}
+}
+let QCBUSY=false;
+async function qcPending(){
+  if(QCBUSY)return;QCBUSY=true;
+  try{for(const j of await jobAll()){if(!(await qcUpload(j)))break}}catch(e){}finally{QCBUSY=false}
+}
+window.addEventListener('online',()=>setTimeout(qcPending,1500));
+setInterval(qcPending,90000);setTimeout(qcPending,6000);
+
+/* al guardar un movimiento con comprobante adjunto */
+async function qcQueue(rec,p){
+  const f=window.__qc&&window.__qc.file;if(!f)return;
+  const ext=/pdf/.test(f.mime)?'pdf':'jpg';
+  const nm=(rec.fecha+'_'+(rec.tipo==='Ingreso'?'Cobro':'Gasto')+'_'+Math.round(rec.importe)+(rec.comprobante?'_'+rec.comprobante:'')+'.'+ext).replace(/[^\w.\-]+/g,'-');
+  const job={id:uid(),movId:rec.id,ws:AW,obra:p.nombre,name:nm,mime:f.mime,blob:f.blob};
+  rec.adjuntoEstado='Pendiente';
+  try{await jobPut(job)}catch(e){toast('No pude guardar el comprobante en el dispositivo');return}
+  setTimeout(async()=>{const ok=await qcUpload(job);if(ok)toast('Comprobante subido a Drive ✔');else if(navigator.onLine&&!(SYN.cfg&&SYN.cfg.url))toast('Comprobante guardado; falta cargar la sincronización para subirlo a Drive');else toast('Comprobante guardado; se sube a Drive cuando haya conexión')},300);
+}
+Object.assign(A,{qcrm:()=>{if(window.__qc)window.__qc.file=null;const a=$('#qc_prev'),b=$('#qc_ocr');if(a)a.innerHTML='';if(b)b.textContent=''}});
 
 document.addEventListener('click',ev=>{
   const el=ev.target.closest('[data-a]');if(!el)return;const a=el.dataset.a;
